@@ -5,10 +5,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   devIndicators: false,
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei', '@react-three/postprocessing'],
+  turbopack: {},
   experimental: {
     optimizePackageImports: ['three', '@react-three/fiber', '@react-three/drei', 'lucide-react', 'zustand'],
   },
-  turbopack: {},
   async headers() {
     return [{
       source: '/:path*',

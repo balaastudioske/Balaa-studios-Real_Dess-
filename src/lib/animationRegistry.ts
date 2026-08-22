@@ -104,8 +104,6 @@ const readBindPose = (animations: THREE.AnimationClip[]) => {
  */
 export const useDessAnimation = (animationId: string, targetMesh: THREE.SkinnedMesh | null): THREE.AnimationClip | null => {
   const mapping = getMappingById(animationId)
-  // If no mapping is found, we can't load the FBX. However, we must pass a valid URL to useFBX
-  // to avoid crashes. We'll fallback to Happy Idle if an invalid ID is passed.
   const legacyPath = mapping?.fbxPath || ANIMATION_MAPPINGS['idle_a'].fbxPath
   const fbxPath = legacyPath.startsWith('/animations/') ? legacyPath.replace(/^\/animations\//, '/library/animations/mixamo/') : legacyPath
   
@@ -118,8 +116,6 @@ export const useDessAnimation = (animationId: string, targetMesh: THREE.SkinnedM
     if (!sourceClip) return null
 
     try {
-      // Map Mixamo bone names and retarget their rotation deltas onto the
-      // authoritative DESS rest pose, rather than overwriting that pose.
       const sourceBindPose = mapping?.retarget === 'bind-pose' ? readBindPose(fbx.animations) : undefined
       const remappedTracks = sourceClip.tracks
         .map((track) => remapTrack(track, fbx, targetMesh, sourceBindPose))
@@ -136,6 +132,51 @@ export const useDessAnimation = (animationId: string, targetMesh: THREE.SkinnedM
       return null
     }
   }, [fbx, targetMesh, mapping?.clipName, animationId])
+
+  return clip
+}
+
+/**
+ * Asynchronously loads and retargets an FBX animation clip without blocking
+ * React Suspense rendering of the avatar mesh.
+ */
+export const useDessAnimationAsync = (animationId: string, targetMesh: THREE.SkinnedMesh | null): THREE.AnimationClip | null => {
+  const [clip, setClip] = useState<THREE.AnimationClip | null>(null)
+  const mapping = getMappingById(animationId)
+
+  useEffect(() => {
+    let cancelled = false
+    if (!targetMesh || !mapping) return
+
+    const loader = new FBXLoader()
+    const legacyPath = mapping.fbxPath
+    const sourcePath = legacyPath.startsWith('/animations/') ? legacyPath.replace(/^\/animations\//, '/library/animations/mixamo/') : legacyPath
+
+    loader.load(
+      sourcePath,
+      (source) => {
+        if (cancelled) return
+        const sourceClip = selectPlayableClip(source.animations)
+        if (!sourceClip) return
+        const sourceBindPose = mapping.retarget === 'bind-pose' ? readBindPose(source.animations) : undefined
+        const remappedTracks = sourceClip.tracks
+          .map((track) => remapTrack(track, source, targetMesh, sourceBindPose))
+          .filter((track): track is THREE.KeyframeTrack => track !== null)
+
+        if (remappedTracks.length && !cancelled) {
+          setClip(new THREE.AnimationClip(mapping.clipName || animationId, sourceClip.duration, remappedTracks))
+        }
+      },
+      undefined,
+      (error) => {
+        console.warn(`[AnimationRegistry] Async load failed for ${animationId}:`, error)
+      }
+    )
+
+    return () => {
+      cancelled = true
+    }
+  }, [animationId, mapping, targetMesh])
 
   return clip
 }

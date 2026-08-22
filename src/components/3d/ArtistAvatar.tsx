@@ -6,7 +6,7 @@ import { useGLTF, useAnimations, useTexture } from '@react-three/drei'
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js'
 import * as THREE from 'three'
 import { FingerRigSystem, HandPosePreset } from '@/lib/fingerRig'
-import { useDessAnimation, useDessAnimationLibrary } from '@/lib/animationRegistry'
+import { useDessAnimation, useDessAnimationAsync, useDessAnimationLibrary } from '@/lib/animationRegistry'
 import { ARTIST_PERFORMANCE_DRILL_PATH, ARTIST_PERFORMANCE_LOWER_BODY_PATH, useDessArtistPerformance, useDessArtistPerformanceClip } from '@/lib/imported-performance'
 import { getAnimationIdForSequenceStep, STAGE_ROUTINE_ANIMATION_IDS } from '@/lib/animations'
 import { useAvatarLipSync } from '@/hooks/useAvatarLipSync'
@@ -166,18 +166,18 @@ export const ArtistAvatar = forwardRef<ArtistAvatarRef, ArtistAvatarProps>(
     }, [avatarInstance])
     const headBone = useMemo(() => avatarInstance.getObjectByName('Head') || avatarInstance.getObjectByName('mixamorigHead'), [avatarInstance])
 
-    // Load animations via registry
+    // Load initial essential idle animation synchronously for instant pose rendering; stream remaining clips asynchronously.
     const idleClip = useDessAnimation('idle_a', targetSkinnedMesh)
     const artistPerformanceClip = useDessArtistPerformance(targetSkinnedMesh)
-    const plaskPerformanceClip = useDessAnimation('plask_performance_1', targetSkinnedMesh)
+    const plaskPerformanceClip = useDessAnimationAsync('plask_performance_1', targetSkinnedMesh)
     const drillPerformanceClip = useDessArtistPerformanceClip(ARTIST_PERFORMANCE_DRILL_PATH, targetSkinnedMesh)
     const lowerBodyPerformanceClip = useDessArtistPerformanceClip(ARTIST_PERFORMANCE_LOWER_BODY_PATH, targetSkinnedMesh)
     const mixamoRoutineClips = useDessAnimationLibrary(STAGE_ROUTINE_ANIMATION_IDS, targetSkinnedMesh)
-    const danceBreakClip = useDessAnimation('robot_dance', targetSkinnedMesh)
-    const walkClip = useDessAnimation('walk_forward', targetSkinnedMesh)
+    const danceBreakClip = useDessAnimationAsync('robot_dance', targetSkinnedMesh)
+    const walkClip = useDessAnimationAsync('walk_forward', targetSkinnedMesh)
     const sequenceAnimationId = getAnimationIdForSequenceStep(sequenceStep || '') || 'idle_a'
     const hasSelectedMotion = Boolean(sequenceStep && sequenceAnimationId !== 'idle_a')
-    const sequenceClip = useDessAnimation(sequenceAnimationId, targetSkinnedMesh)
+    const sequenceClip = useDessAnimationAsync(sequenceAnimationId, targetSkinnedMesh)
 
     // Package animation clips
     const clips = useMemo(() => {
