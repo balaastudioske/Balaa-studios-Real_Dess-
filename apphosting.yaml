@@ -1,0 +1,9 @@
+runtime: firebase-app-hosting
+build:
+  command: npm run build
+run:
+  command: npm run start
+  port: 3000
+env:
+  - variable: NODE_ENV
+    value: production
