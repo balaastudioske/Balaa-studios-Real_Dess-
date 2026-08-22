@@ -216,30 +216,29 @@ function StageOrbitalRocketThrusters() {
       <group ref={thrustersGroupRef}>
         {thrusterMounts.map((mount, i) => (
           <group key={i} position={mount}>
-            {/* Dark Metallic Titanium Chrome Nozzle Housing (metalness: 0.96) */}
+            {/* Dark Metallic Titanium Chrome Nozzle Housing */}
             <mesh position={[0, 0, -0.22]} rotation={[Math.PI / 2, 0, 0]}>
-              <cylinderGeometry args={[0.26, 0.14, 0.55, 20]} />
+              <cylinderGeometry args={[0.26, 0.14, 0.55, 12]} />
               <meshStandardMaterial
                 color="#181a20"
-                metalness={0.96}
-                roughness={0.12}
-                envMapIntensity={1.4}
+                metalness={0.92}
+                roughness={0.2}
               />
             </mesh>
 
             {/* Inner Metallic Ring Trim */}
             <mesh position={[0, 0, -0.02]} rotation={[Math.PI / 2, 0, 0]}>
-              <torusGeometry args={[0.22, 0.028, 12, 24]} />
+              <torusGeometry args={[0.22, 0.028, 8, 16]} />
               <meshStandardMaterial
                 color="#64748b"
-                metalness={0.92}
-                roughness={0.18}
+                metalness={0.88}
+                roughness={0.25}
               />
             </mesh>
 
-            {/* Fiery Exhaust Flame Cone (Golden Orange / Amber) */}
+            {/* Fiery Exhaust Flame Cone */}
             <mesh name="FLAME_CONE" position={[0, 0, -0.72]} rotation={[Math.PI / 2, 0, 0]}>
-              <cylinderGeometry args={[0.22, 0.03, 0.85, 16, 1, true]} />
+              <cylinderGeometry args={[0.22, 0.03, 0.85, 10, 1, true]} />
               <meshBasicMaterial
                 color="#f97316"
                 transparent={true}
