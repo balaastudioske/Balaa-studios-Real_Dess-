@@ -52,12 +52,12 @@ function StudioFallback({ position, targetHeight }: Pick<AssetProps, 'position' 
 function PaybillSignFace() {
   const texture = useMemo(() => {
     const canvas = document.createElement('canvas')
-    canvas.width = 600
-    canvas.height = 960
+    canvas.width = 400
+    canvas.height = 640
     const context = canvas.getContext('2d')!
 
     // Green M-Pesa gradient background
-    const bg = context.createLinearGradient(0, 0, 0, 960)
+    const bg = context.createLinearGradient(0, 0, 0, 640)
     bg.addColorStop(0, '#00853f')
     bg.addColorStop(0.5, '#00a651')
     bg.addColorStop(1, '#006830')
@@ -66,33 +66,33 @@ function PaybillSignFace() {
 
     // White border
     context.strokeStyle = '#ffffff'
-    context.lineWidth = 12
-    context.strokeRect(12, 12, 576, 936)
+    context.lineWidth = 8
+    context.strokeRect(8, 8, 384, 624)
 
     context.fillStyle = '#ffffff'
     context.textAlign = 'center'
-    context.font = '900 76px Arial, sans-serif'
-    context.fillText('M-PESA', 300, 180)
+    context.font = '900 50px Arial, sans-serif'
+    context.fillText('M-PESA', 200, 120)
 
     context.fillStyle = '#e8ffea'
-    context.font = '700 38px Arial, sans-serif'
-    context.fillText('BUY GOODS TILL', 300, 310)
+    context.font = '700 25px Arial, sans-serif'
+    context.fillText('BUY GOODS TILL', 200, 205)
 
     // Till number highlight card
     context.fillStyle = '#ffffff'
-    context.fillRect(40, 390, 520, 180)
+    context.fillRect(25, 260, 350, 120)
     context.fillStyle = '#007a38'
-    context.font = '900 92px Arial, sans-serif'
-    context.fillText('5834631', 300, 520)
+    context.font = '900 62px Arial, sans-serif'
+    context.fillText('5834631', 200, 345)
 
     context.fillStyle = '#ffffff'
-    context.font = '900 34px Arial, sans-serif'
-    context.fillText('REAL DESS VAULT', 300, 690)
+    context.font = '900 23px Arial, sans-serif'
+    context.fillText('REAL DESS VAULT', 200, 460)
 
     context.fillStyle = '#e8ffea'
-    context.font = '700 26px Arial, sans-serif'
-    context.fillText('MUSIC • SERVICES • MERCH', 300, 750)
-    context.fillText('INSTANT DIGITAL CLEARANCE', 300, 800)
+    context.font = '700 17px Arial, sans-serif'
+    context.fillText('MUSIC • SERVICES • MERCH', 200, 500)
+    context.fillText('INSTANT DIGITAL CLEARANCE', 200, 535)
 
     const result = new THREE.CanvasTexture(canvas)
     result.colorSpace = THREE.SRGBColorSpace
@@ -113,64 +113,59 @@ const EASTER_EGG_URL = 'https://omg10.com/4/9848713'
 function DontPressSignFace() {
   const texture = useMemo(() => {
     const canvas = document.createElement('canvas')
-    canvas.width = 600
-    canvas.height = 960
+    canvas.width = 400
+    canvas.height = 640
     const ctx = canvas.getContext('2d')!
 
     // Red hazard background
-    const bgGrad = ctx.createLinearGradient(0, 0, 0, 960)
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, 640)
     bgGrad.addColorStop(0, '#1c0505')
     bgGrad.addColorStop(0.5, '#450a0a')
     bgGrad.addColorStop(1, '#1a0303')
     ctx.fillStyle = bgGrad
-    ctx.fillRect(0, 0, 600, 960)
+    ctx.fillRect(0, 0, 400, 640)
 
     // Hazard border
     ctx.strokeStyle = '#ef4444'
-    ctx.lineWidth = 14
-    ctx.strokeRect(10, 10, 580, 940)
-
-    // Inner subtle border
-    ctx.strokeStyle = 'rgba(254, 202, 202, 0.35)'
-    ctx.lineWidth = 3
-    ctx.strokeRect(26, 26, 548, 908)
+    ctx.lineWidth = 9
+    ctx.strokeRect(6, 6, 388, 628)
 
     ctx.textAlign = 'center'
 
     // Header
     ctx.fillStyle = '#fbbf24'
-    ctx.font = '900 52px monospace'
-    ctx.fillText('⚠ ATMOSPHERE', 300, 115)
+    ctx.font = '900 34px monospace'
+    ctx.fillText('⚠ ATMOSPHERE', 200, 75)
 
     ctx.fillStyle = '#fca5a5'
-    ctx.font = '700 28px monospace'
-    ctx.fillText('HABITAT PURGE OVERRIDE', 300, 168)
+    ctx.font = '700 18px monospace'
+    ctx.fillText('HABITAT PURGE OVERRIDE', 200, 110)
 
     // Red Emergency Button Graphic
-    const btnX = 300
-    const btnY = 390
-    const btnR = 150
+    const btnX = 200
+    const btnY = 260
+    const btnR = 100
 
     // Outer glow ring
-    const ringGrad = ctx.createRadialGradient(btnX, btnY, btnR - 10, btnX, btnY, btnR + 35)
+    const ringGrad = ctx.createRadialGradient(btnX, btnY, btnR - 7, btnX, btnY, btnR + 24)
     ringGrad.addColorStop(0, 'rgba(239, 68, 68, 0.85)')
     ringGrad.addColorStop(1, 'rgba(239, 68, 68, 0)')
     ctx.fillStyle = ringGrad
     ctx.beginPath()
-    ctx.arc(btnX, btnY, btnR + 35, 0, Math.PI * 2)
+    ctx.arc(btnX, btnY, btnR + 24, 0, Math.PI * 2)
     ctx.fill()
 
     // Outer Bezel
     ctx.fillStyle = '#18181b'
     ctx.beginPath()
-    ctx.arc(btnX, btnY, btnR + 14, 0, Math.PI * 2)
+    ctx.arc(btnX, btnY, btnR + 9, 0, Math.PI * 2)
     ctx.fill()
     ctx.strokeStyle = '#71717a'
-    ctx.lineWidth = 5
+    ctx.lineWidth = 3
     ctx.stroke()
 
     // Main Glossy Red Button Dome
-    const btnGrad = ctx.createRadialGradient(btnX - 35, btnY - 45, 10, btnX, btnY, btnR)
+    const btnGrad = ctx.createRadialGradient(btnX - 22, btnY - 30, 6, btnX, btnY, btnR)
     btnGrad.addColorStop(0, '#f87171')
     btnGrad.addColorStop(0.35, '#dc2626')
     btnGrad.addColorStop(0.85, '#991b1b')
@@ -182,23 +177,23 @@ function DontPressSignFace() {
 
     // Button Text
     ctx.fillStyle = '#ffffff'
-    ctx.font = '900 42px Arial, sans-serif'
-    ctx.fillText("DON'T", btnX, btnY - 12)
-    ctx.fillText('PRESS', btnX, btnY + 42)
+    ctx.font = '900 28px Arial, sans-serif'
+    ctx.fillText("DON'T", btnX, btnY - 8)
+    ctx.fillText('PRESS', btnX, btnY + 28)
 
     // Life-Support Status Text
     ctx.fillStyle = '#4ade80'
-    ctx.font = '900 34px monospace'
-    ctx.fillText('O₂ 21% • STABLE', 300, 640)
+    ctx.font = '900 22px monospace'
+    ctx.fillText('O₂ 21% • STABLE', 200, 425)
 
     ctx.fillStyle = '#f87171'
-    ctx.font = '700 26px monospace'
-    ctx.fillText('CRITICAL HABITAT PROTOCOL', 300, 695)
+    ctx.font = '700 17px monospace'
+    ctx.fillText('CRITICAL HABITAT PROTOCOL', 200, 462)
 
     ctx.fillStyle = '#fed7aa'
-    ctx.font = '600 22px monospace'
-    ctx.fillText('DO NOT ENGAGE IN ORBIT', 300, 745)
-    ctx.fillText('STAGE LOCK: ACTIVE', 300, 788)
+    ctx.font = '600 15px monospace'
+    ctx.fillText('DO NOT ENGAGE IN ORBIT', 200, 495)
+    ctx.fillText('STAGE LOCK: ACTIVE', 200, 525)
 
     const result = new THREE.CanvasTexture(canvas)
     result.colorSpace = THREE.SRGBColorSpace
@@ -230,8 +225,8 @@ const ORBITAL_PERIOD_MINUTES = 92.68
 function OrbitalMetadataPoleBannerFace() {
   const { canvas, texture, ctx } = useMemo(() => {
     const c = document.createElement('canvas')
-    c.width = 800
-    c.height = 1280
+    c.width = 400
+    c.height = 640
     const context = c.getContext('2d')!
     const tex = new THREE.CanvasTexture(c)
     tex.colorSpace = THREE.SRGBColorSpace
@@ -242,7 +237,7 @@ function OrbitalMetadataPoleBannerFace() {
 
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime()
-    if (time - lastUpdate.current < 0.5) return
+    if (time - lastUpdate.current < 1.0) return
     lastUpdate.current = time
 
     const now = Date.now()

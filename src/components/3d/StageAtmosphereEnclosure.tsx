@@ -59,20 +59,15 @@ export function StageAtmosphereEnclosure() {
     return tex
   }, [])
 
-  // Shared Architectural Glass Material
+  // Lightweight Architectural Glass Material (Standard material to avoid heavy transmission buffer passes)
   const glassMaterial = useMemo(
     () =>
-      new THREE.MeshPhysicalMaterial({
+      new THREE.MeshStandardMaterial({
         color: '#e0f2fe',
         transparent: true,
-        opacity: 0.11,
-        roughness: 0.04,
-        metalness: 0.1,
-        transmission: 0.94,
-        ior: 1.22,
-        reflectivity: 0.45,
-        clearcoat: 1.0,
-        clearcoatRoughness: 0.06,
+        opacity: 0.12,
+        roughness: 0.08,
+        metalness: 0.2,
         side: THREE.DoubleSide,
         depthWrite: false,
       }),
