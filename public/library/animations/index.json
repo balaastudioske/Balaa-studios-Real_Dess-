@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "artist": "BALAA STUDIOS master Dess",
+  "animationCount": 36,
+  "animations": [
+    {
+      "id": "artist_performance_hip_hop",
+      "file": "/library/animations/artist-performance-hip-hop.glb",
+      "category": "performance",
+      "format": "glb"
+    },
+    {
+      "id": "action_idle_to_standing_idle",
+      "file": "/library/animations/mixamo/Action Idle To Standing Idle.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "angry",
+      "file": "/library/animations/mixamo/Angry.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "arm_stretching",
+      "file": "/library/animations/mixamo/Arm Stretching.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "bboy_hip_hop_move",
+      "file": "/library/animations/mixamo/Bboy Hip Hop Move.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "dismissing_gesture",
+      "file": "/library/animations/mixamo/Dismissing Gesture.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "dodging_right",
+      "file": "/library/animations/mixamo/Dodging Right.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "happy_idle",
+      "file": "/library/animations/mixamo/Happy Idle.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "hip_hop_dancing_1",
+      "file": "/library/animations/mixamo/Hip Hop Dancing (1).fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "hip_hop_dancing_2",
+      "file": "/library/animations/mixamo/Hip Hop Dancing (2).fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "hip_hop_dancing",
+      "file": "/library/animations/mixamo/Hip Hop Dancing.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "joyful_jump",
+      "file": "/library/animations/mixamo/Joyful Jump.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "jumping_down",
+      "file": "/library/animations/mixamo/Jumping Down.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "nervously_look_around",
+      "file": "/library/animations/mixamo/Nervously Look Around.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "offensive_idle",
+      "file": "/library/animations/mixamo/Offensive Idle.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "old_man_idle",
+      "file": "/library/animations/mixamo/Old Man Idle.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "picking_up",
+      "file": "/library/animations/mixamo/Picking Up.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "plotting",
+      "file": "/library/animations/mixamo/Plotting.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "pointing_forward",
+      "file": "/library/animations/mixamo/Pointing Forward.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "praying",
+      "file": "/library/animations/mixamo/Praying.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "robot_hip_hop_dance",
+      "file": "/library/animations/mixamo/Robot Hip Hop Dance.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "shoved_reaction_with_spin",
+      "file": "/library/animations/mixamo/Shoved Reaction With Spin.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "singing",
+      "file": "/library/animations/mixamo/Singing.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "sitting_laughing",
+      "file": "/library/animations/mixamo/Sitting Laughing.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "sitting",
+      "file": "/library/animations/mixamo/Sitting.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "skinning_test",
+      "file": "/library/animations/mixamo/Skinning Test.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "unarmed_idle_looking_ver_2",
+      "file": "/library/animations/mixamo/Unarmed Idle Looking Ver. 2.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "unarmed_walk_forward",
+      "file": "/library/animations/mixamo/Unarmed Walk Forward.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "using_a_fax_machine",
+      "file": "/library/animations/mixamo/Using A Fax Machine.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "zombie_idle_1",
+      "file": "/library/animations/mixamo/Zombie Idle (1).fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "zombie_idle",
+      "file": "/library/animations/mixamo/Zombie Idle.fbx",
+      "category": "mixamo",
+      "format": "fbx"
+    },
+    {
+      "id": "artist_performance_drill_upper_body",
+      "file": "/library/animations/reference/artist-performance-drill-upper-body.glb",
+      "category": "reference",
+      "format": "glb"
+    },
+    {
+      "id": "artist_performance_hip_hop_lower_body",
+      "file": "/library/animations/reference/artist-performance-hip-hop-lower-body.glb",
+      "category": "reference",
+      "format": "glb"
+    },
+    {
+      "id": "finger_gesture_left_hand",
+      "file": "/library/animations/reference/finger-gesture-left-hand.bvh",
+      "category": "reference",
+      "format": "bvh"
+    },
+    {
+      "id": "finger_gesture_left_hand",
+      "file": "/library/animations/reference/finger-gesture-left-hand.glb",
+      "category": "reference",
+      "format": "glb"
+    },
+    {
+      "id": "lower_leg_reference",
+      "file": "/library/animations/reference/lower-leg-reference.bvh",
+      "category": "reference",
+      "format": "bvh"
+    }
+  ]
+}

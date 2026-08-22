@@ -1,0 +1,16 @@
+{
+  "id": "look_07",
+  "name": "BALAA Logo Tee — Jet Black",
+  "avatar": "/assets/models/dess.glb",
+  "garment": "/library/merch/07/garment.glb",
+  "foundation": "shirt",
+  "outfitPresetId": "tee_black",
+  "color": "#0A0A0A",
+  "bottom": "blue denim jeans",
+  "validationStatus": "fitted+baked",
+  "visualReview": [
+    "silhouette match vs reference images",
+    "logo placement/size/orientation (deferred to visual pass)",
+    "deformation on Mixamo walk/dance (VISUAL REVIEW REQUIRED)"
+  ]
+}

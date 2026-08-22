@@ -1,0 +1,26 @@
+// Ported from Godot engine/scripts/desktop_studio.gd MIXAMO_TO_VRM_BONES mapping
+// Used for build-time animation retargeting; not needed at runtime after merge
+export const MIXAMO_TO_VRM: Record<string, string> = {
+  mixamorig_Hips: 'Hips',
+  mixamorig_Spine: 'Spine',
+  mixamorig_Spine1: 'Chest',
+  mixamorig_Spine2: 'UpperChest',
+  mixamorig_Neck: 'Neck',
+  mixamorig_Head: 'Head',
+  mixamorig_LeftShoulder: 'LeftShoulder',
+  mixamorig_LeftArm: 'LeftUpperArm',
+  mixamorig_LeftForeArm: 'LeftLowerArm',
+  mixamorig_LeftHand: 'LeftHand',
+  mixamorig_RightShoulder: 'RightShoulder',
+  mixamorig_RightArm: 'RightUpperArm',
+  mixamorig_RightForeArm: 'RightLowerArm',
+  mixamorig_RightHand: 'RightHand',
+  mixamorig_LeftUpLeg: 'LeftUpperLeg',
+  mixamorig_LeftLeg: 'LeftLowerLeg',
+  mixamorig_LeftFoot: 'LeftFoot',
+  mixamorig_LeftToeBase: 'LeftToes',
+  mixamorig_RightUpLeg: 'RightUpperLeg',
+  mixamorig_RightLeg: 'RightLowerLeg',
+  mixamorig_RightFoot: 'RightFoot',
+  mixamorig_RightToeBase: 'RightToes',
+}

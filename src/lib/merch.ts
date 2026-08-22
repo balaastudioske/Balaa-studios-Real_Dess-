@@ -1,0 +1,128 @@
+import { MerchItem } from '@/types'
+
+export const MERCH_ITEMS: Record<string, MerchItem> = {
+  look_01: {
+    id: 'look_01',
+    name: 'BALAA Oversized Tee — Charcoal',
+    description: 'Master Streetwear Look: 100% heavyweight cotton tee with bold white BALAA crest, paired with washed denim.',
+    price: 45,
+    originalPrice: 60,
+    image: '/textures/balaa_logo_white.png',
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    stripePriceId: 'price_balaa_tee_charcoal',
+    meshName: 'outfit_top',
+  },
+  camo_shorts: {
+    id: 'camo_shorts',
+    name: 'BALAA Athletic Camo Performance Shorts',
+    description: 'Athletic stage edition: Woodland tactical camo boxer shorts for high-energy live performance routines.',
+    price: 55,
+    originalPrice: 70,
+    image: '/textures/balaa_logo_charcoal.png',
+    sizes: ['S', 'M', 'L', 'XL'],
+    stripePriceId: 'price_balaa_camo_shorts',
+    meshName: 'outfit_bottom',
+  },
+  look_02: {
+    id: 'look_02',
+    name: 'BALAA Classic Hoodie — Jet Black',
+    description: 'Signature tailored fleece hoodie with embroidered high-density BALAA typography.',
+    price: 89,
+    originalPrice: 110,
+    image: '/textures/balaa_logo_white.png',
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    stripePriceId: 'price_balaa_hoodie_black',
+    meshName: 'outfit_top',
+  },
+  look_03: {
+    id: 'look_03',
+    name: 'BALAA Crew Sweater — Charcoal',
+    description: 'Minimalist athletic crewneck knit in deep charcoal with rib-knit cuffs.',
+    price: 75,
+    originalPrice: 95,
+    image: '/textures/balaa_logo_white.png',
+    sizes: ['S', 'M', 'L', 'XL'],
+    stripePriceId: 'price_balaa_sweater_charcoal',
+    meshName: 'outfit_top',
+  },
+  look_04: {
+    id: 'look_04',
+    name: 'BALAA Logo Tee — Pure White',
+    description: 'Crisp optical white studio tee with contrast jet black BALAA branding.',
+    price: 45,
+    image: '/textures/balaa_logo_black.png',
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    stripePriceId: 'price_balaa_tee_white',
+    meshName: 'outfit_top',
+  },
+  look_05: {
+    id: 'look_05',
+    name: 'BALAA Oversized Hoodie — Charcoal',
+    description: 'Drop-shoulder relaxed hoodie in stone charcoal with kangaroo pocket.',
+    price: 89,
+    image: '/textures/balaa_logo_white.png',
+    sizes: ['S', 'M', 'L', 'XL'],
+    stripePriceId: 'price_balaa_hoodie_charcoal',
+    meshName: 'outfit_top',
+  },
+  look_06: {
+    id: 'look_06',
+    name: 'BALAA Crew Sweater — Cream',
+    description: 'Warm cream heavyweight fleece sweater with tonal BALAA studio emblem.',
+    price: 75,
+    image: '/textures/balaa_logo_charcoal.png',
+    sizes: ['S', 'M', 'L', 'XL'],
+    stripePriceId: 'price_balaa_sweater_cream',
+    meshName: 'outfit_top',
+  },
+  look_07: {
+    id: 'look_07',
+    name: 'BALAA Logo Tee — Jet Black',
+    description: 'Underground edition: Deep black tee with reflective tonal logo.',
+    price: 45,
+    image: '/textures/balaa_logo_white.png',
+    sizes: ['S', 'M', 'L', 'XL'],
+    stripePriceId: 'price_balaa_tee_black',
+    meshName: 'outfit_top',
+  },
+  look_08: {
+    id: 'look_08',
+    name: 'BALAA Classic Hoodie — Pure White',
+    description: 'High-visibility white concert hoodie with black contrast drawstring accents.',
+    price: 89,
+    image: '/textures/balaa_logo_black.png',
+    sizes: ['S', 'M', 'L', 'XL'],
+    stripePriceId: 'price_balaa_hoodie_white',
+    meshName: 'outfit_top',
+  },
+  look_09: {
+    id: 'look_09',
+    name: 'BALAA Crew Sweater — Jet Black',
+    description: 'Ultra-plush jet black knit pullover with reinforced shoulder seam lines.',
+    price: 75,
+    image: '/textures/balaa_logo_white.png',
+    sizes: ['S', 'M', 'L', 'XL'],
+    stripePriceId: 'price_balaa_sweater_black',
+    meshName: 'outfit_top',
+  },
+  look_10: {
+    id: 'look_10',
+    name: 'BALAA Street Bomber — Charcoal',
+    description: 'Water-resistant tactical bomber jacket with satin lining and heavy metal hardware.',
+    price: 125,
+    originalPrice: 160,
+    image: '/textures/balaa_logo_white.png',
+    sizes: ['S', 'M', 'L', 'XL'],
+    stripePriceId: 'price_balaa_bomber_charcoal',
+    meshName: 'outfit_top',
+  },
+}
+
+export const MERCH_BY_MESH = new Map<string, MerchItem>(
+  Object.values(MERCH_ITEMS)
+    .filter((m) => m.meshName)
+    .map((m) => [m.meshName, m])
+)
+
+export const findMerchByMesh = (meshName: string): MerchItem | undefined =>
+  MERCH_BY_MESH.get(meshName)

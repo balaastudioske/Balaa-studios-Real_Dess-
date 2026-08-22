@@ -1,0 +1,31 @@
+{
+  "stageName": "real_des_four_pillar_flat_stage_v2",
+  "version": "2.0.0",
+  "dimensions": {
+    "width": 16.5,
+    "depth": 7.0,
+    "floorTopY": 0.0,
+    "roofBottomY": 6.45,
+    "pillarPositions": [
+      [-7.8, 3.225, -3.1],
+      [7.8, 3.225, -3.1],
+      [-7.8, 3.225, 3.1],
+      [7.8, 3.225, 3.1]
+    ]
+  },
+  "performerConstraints": {
+    "center": [0, 0, 0],
+    "bounds": {
+      "minX": -7.55,
+      "maxX": 7.55,
+      "minZ": -2.80,
+      "maxZ": 2.80,
+      "groundY": 0.0
+    },
+    "speed": {
+      "walk": 1.6,
+      "strafe": 1.2,
+      "turnRate": 5.0
+    }
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "products": [
+    {
+      "id": "balaa-tee_charcoal",
+      "name": "BALAA Oversized Tee — Charcoal",
+      "description": "Final BALAA merch design 01 (foundation: shirt).",
+      "category": "tshirt",
+      "price": 45,
+      "currency": "USD",
+      "color": "#2B2B2B",
+      "outfitPresetId": "tee_charcoal",
+      "garmentFile": "/library/merch/01/garment.glb",
+      "available": true,
+      "tags": [
+        "visual-review-required"
+      ]
+    },
+    {
+      "id": "balaa-hoodie_black",
+      "name": "BALAA Classic Hoodie — Jet Black",
+      "description": "Final BALAA merch design 02 (foundation: hoodie).",
+      "category": "hoodie",
+      "price": 89,
+      "currency": "USD",
+      "color": "#0A0A0A",
+      "outfitPresetId": "hoodie_black",
+      "garmentFile": "/library/merch/02/garment.glb",
+      "available": true,
+      "tags": [
+        "visual-review-required"
+      ]
+    },
+    {
+      "id": "balaa-sweater_charcoal",
+      "name": "BALAA Crew Sweater — Charcoal",
+      "description": "Final BALAA merch design 03 (foundation: sweater).",
+      "category": "sweater",
+      "price": 75,
+      "currency": "USD",
+      "color": "#2B2B2B",
+      "outfitPresetId": "sweater_charcoal",
+      "garmentFile": "/library/merch/03/garment.glb",
+      "available": true,
+      "tags": [
+        "visual-review-required"
+      ]
+    },
+    {
+      "id": "balaa-tee_white",
+      "name": "BALAA Logo Tee — Pure White",
+      "description": "Final BALAA merch design 04 (foundation: shirt).",
+      "category": "tshirt",
+      "price": 45,
+      "currency": "USD",
+      "color": "#FFFFFF",
+      "outfitPresetId": "tee_white",
+      "garmentFile": "/library/merch/04/garment.glb",
+      "available": true,
+      "tags": [
+        "visual-review-required"
+      ]
+    },
+    {
+      "id": "balaa-hoodie_charcoal",
+      "name": "BALAA Oversized Hoodie — Charcoal",
+      "description": "Final BALAA merch design 05 (foundation: hoodie).",
+      "category": "hoodie",
+      "price": 89,
+      "currency": "USD",
+      "color": "#2B2B2B",
+      "outfitPresetId": "hoodie_charcoal",
+      "garmentFile": "/library/merch/05/garment.glb",
+      "available": true,
+      "tags": [
+        "visual-review-required"
+      ]
+    },
+    {
+      "id": "balaa-sweater_cream",
+      "name": "BALAA Crew Sweater — Cream",
+      "description": "Final BALAA merch design 06 (foundation: sweater).",
+      "category": "sweater",
+      "price": 75,
+      "currency": "USD",
+      "color": "#F5F0E8",
+      "outfitPresetId": "sweater_cream",
+      "garmentFile": "/library/merch/06/garment.glb",
+      "available": true,
+      "tags": [
+        "visual-review-required"
+      ]
+    },
+    {
+      "id": "balaa-tee_black",
+      "name": "BALAA Logo Tee — Jet Black",
+      "description": "Final BALAA merch design 07 (foundation: shirt).",
+      "category": "tshirt",
+      "price": 45,
+      "currency": "USD",
+      "color": "#0A0A0A",
+      "outfitPresetId": "tee_black",
+      "garmentFile": "/library/merch/07/garment.glb",
+      "available": true,
+      "tags": [
+        "visual-review-required"
+      ]
+    },
+    {
+      "id": "balaa-hoodie_white",
+      "name": "BALAA Classic Hoodie — Pure White",
+      "description": "Final BALAA merch design 08 (foundation: hoodie).",
+      "category": "hoodie",
+      "price": 89,
+      "currency": "USD",
+      "color": "#FFFFFF",
+      "outfitPresetId": "hoodie_white",
+      "garmentFile": "/library/merch/08/garment.glb",
+      "available": true,
+      "tags": [
+        "visual-review-required"
+      ]
+    },
+    {
+      "id": "balaa-sweater_black",
+      "name": "BALAA Crew Sweater — Jet Black",
+      "description": "Final BALAA merch design 09 (foundation: sweater).",
+      "category": "sweater",
+      "price": 75,
+      "currency": "USD",
+      "color": "#0A0A0A",
+      "outfitPresetId": "sweater_black",
+      "garmentFile": "/library/merch/09/garment.glb",
+      "available": true,
+      "tags": [
+        "visual-review-required"
+      ]
+    },
+    {
+      "id": "balaa-sweater_bomber",
+      "name": "BALAA Street Bomber — Charcoal",
+      "description": "Final BALAA merch design 10 (foundation: sweater).",
+      "category": "sweater",
+      "price": 75,
+      "currency": "USD",
+      "color": "#1E1E1E",
+      "outfitPresetId": "sweater_bomber",
+      "garmentFile": "/library/merch/10/garment.glb",
+      "available": true,
+      "tags": [
+        "visual-review-required"
+      ]
+    }
+  ]
+}
