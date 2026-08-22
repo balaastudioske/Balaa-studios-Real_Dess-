@@ -1,6 +1,6 @@
-import { useMemo } from 'react'
-import { useGLTF } from '@react-three/drei'
+import { useEffect, useState } from 'react'
 import * as THREE from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 /** The vetted full-body performance supplied for the stage. */
 export const ARTIST_PERFORMANCE_HIP_HOP_PATH = '/library/animations/artist-performance-hip-hop.glb'
@@ -95,24 +95,40 @@ function remapImportedTrack(track: THREE.KeyframeTrack, sourceRoot: THREE.Object
 }
 
 /**
- * Loads the vetted source once and produces a rotation-only Dess clip. The
- * target mesh keeps the hook inert until the authoritative Dess rig is ready.
+ * Loads performance GLB clips asynchronously in the background so initial character
+ * rendering is unblocked.
  */
 export function useDessArtistPerformanceClip(path: string, targetMesh: THREE.SkinnedMesh | null): THREE.AnimationClip | null {
-  const { animations, scene } = useGLTF(path) as unknown as {
-    animations: THREE.AnimationClip[]
-    scene?: THREE.Group
-  }
+  const [clip, setClip] = useState<THREE.AnimationClip | null>(null)
 
-  return useMemo(() => {
-    if (!targetMesh || !animations?.[0]) return null
-    const tracks = animations[0].tracks
-      .map((track) => remapImportedTrack(track, scene, targetMesh))
-      .filter((track): track is THREE.KeyframeTrack => track !== null)
-    return tracks.length
-      ? new THREE.AnimationClip(path, animations[0].duration, tracks)
-      : null
-  }, [animations, path, scene, targetMesh])
+  useEffect(() => {
+    let cancelled = false
+    if (!targetMesh) return
+
+    const loader = new GLTFLoader()
+    loader.load(
+      path,
+      (gltf) => {
+        if (cancelled || !gltf.animations?.[0]) return
+        const tracks = gltf.animations[0].tracks
+          .map((track) => remapImportedTrack(track, gltf.scene, targetMesh))
+          .filter((track): track is THREE.KeyframeTrack => track !== null)
+        if (tracks.length && !cancelled) {
+          setClip(new THREE.AnimationClip(path, gltf.animations[0].duration, tracks))
+        }
+      },
+      undefined,
+      (error) => {
+        console.warn(`[imported-performance] Unable to async stream performance clip ${path}:`, error)
+      }
+    )
+
+    return () => {
+      cancelled = true
+    }
+  }, [path, targetMesh])
+
+  return clip
 }
 
 export function useDessArtistPerformance(targetMesh: THREE.SkinnedMesh | null): THREE.AnimationClip | null {
