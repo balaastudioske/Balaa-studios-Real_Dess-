@@ -166,8 +166,8 @@ export const ArtistAvatar = forwardRef<ArtistAvatarRef, ArtistAvatarProps>(
     }, [avatarInstance])
     const headBone = useMemo(() => avatarInstance.getObjectByName('Head') || avatarInstance.getObjectByName('mixamorigHead'), [avatarInstance])
 
-    // Load initial essential idle animation synchronously for instant pose rendering; stream remaining clips asynchronously.
-    const idleClip = useDessAnimation('idle_a', targetSkinnedMesh)
+    // Load initial essential idle animation asynchronously so avatar renders instantly without blocking Suspense
+    const idleClip = useDessAnimationAsync('idle_a', targetSkinnedMesh)
     const artistPerformanceClip = useDessArtistPerformance(targetSkinnedMesh)
     const plaskPerformanceClip = useDessAnimationAsync('plask_performance_1', targetSkinnedMesh)
     const drillPerformanceClip = useDessArtistPerformanceClip(ARTIST_PERFORMANCE_DRILL_PATH, targetSkinnedMesh)

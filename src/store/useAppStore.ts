@@ -83,7 +83,7 @@ export const useAppStore = create<AppState & AppActions>()((set) => ({
   renderMode: 'balaa-hybrid',
   sequenceStep: null,
   currentMood: null,
-  currentOutfit: 'camo_shorts',
+  currentOutfit: 'look_01',
   currentEnvironment: null,
   selectedMerch: null,
   hoveredMesh: null,

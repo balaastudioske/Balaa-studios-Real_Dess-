@@ -31,8 +31,8 @@ uniform float uBalaaRimStrength;
 const CARTOON_LIGHTING_CHUNK = `
 // BALAA Gritty Comic Cel-Shading & Stylized Color Bands
 if (uBalaaToonStrength > 0.001) {
-  // 1. Calculate luminance of outgoing light
-  float lum = dot(outgoingLight, vec3(0.299, 0.587, 0.114));
+  // 1. Calculate luminance of output color
+  float lum = dot(gl_FragColor.rgb, vec3(0.299, 0.587, 0.114));
   
   // 2. Crisp 4-tier Gritty Comic Cel-Shading Bands
   float band1 = step(0.18, lum);
@@ -44,9 +44,8 @@ if (uBalaaToonStrength > 0.001) {
   cartoonFactor = mix(cartoonFactor, uBalaaMidtone * 1.12, band2);
   cartoonFactor = mix(cartoonFactor, uBalaaHighlight * 1.35, band3);
   
-  // Blend between PBR texture color and stylized gritty cartoon light bands
-  vec3 stylizedLight = outgoingLight * mix(1.0, cartoonFactor, uBalaaToonStrength);
-  outgoingLight = stylizedLight;
+  // Blend between PBR color and stylized gritty cartoon light bands
+  gl_FragColor.rgb = gl_FragColor.rgb * mix(1.0, cartoonFactor, uBalaaToonStrength);
 }
 `
 
