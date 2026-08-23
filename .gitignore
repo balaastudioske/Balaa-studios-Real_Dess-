@@ -57,3 +57,5 @@ coverage/
 archive/
 .kilo/
 
+
+.vercel

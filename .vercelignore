@@ -1,0 +1,13 @@
+.next
+.git
+.venv
+backend/.venv
+venv
+node_modules
+archive
+.firebase
+.kilo
+coverage
+tmp
+temp
+*.log
