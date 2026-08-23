@@ -544,7 +544,7 @@ export const StageViewport = ({ className = '', conceptMode = false, activeMode 
             enableZoom={cameraMode === 'explore'}
             enablePan={cameraMode === 'explore'}
             enableRotate={cameraMode === 'explore'}
-            enabled={true}
+            enabled={cameraMode === 'explore'}
             minDistance={2.2}
             maxDistance={2400}
             minPolarAngle={0.05}
