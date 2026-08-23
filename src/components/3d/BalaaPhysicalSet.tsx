@@ -253,87 +253,86 @@ function OrbitalMetadataPoleBannerFace() {
     const m = String(Math.floor((elapsedSeconds % 3600) / 60)).padStart(2, '0')
     const s = String(elapsedSeconds % 60).padStart(2, '0')
 
+    const w = 400
+    const hTotal = 640
+
     // 1. Dark sleek cyber panel background
-    const bgGrad = ctx.createLinearGradient(0, 0, 0, 1280)
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, hTotal)
     bgGrad.addColorStop(0, '#0a0604')
     bgGrad.addColorStop(0.5, '#160d07')
     bgGrad.addColorStop(1, '#080402')
     ctx.fillStyle = bgGrad
-    ctx.fillRect(0, 0, 800, 1280)
+    ctx.fillRect(0, 0, w, hTotal)
 
     // 2. Glowing Orange Outer Border
     ctx.strokeStyle = '#f97316'
-    ctx.lineWidth = 14
-    ctx.strokeRect(10, 10, 780, 1260)
+    ctx.lineWidth = 7
+    ctx.strokeRect(5, 5, w - 10, hTotal - 10)
 
     // Inner subtle border
     ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)'
-    ctx.lineWidth = 3
-    ctx.strokeRect(26, 26, 748, 1228)
+    ctx.lineWidth = 2
+    ctx.strokeRect(14, 14, w - 28, hTotal - 28)
 
     // 3. Header badge
     ctx.fillStyle = '#f97316'
     ctx.beginPath()
-    ctx.arc(65, 80, 18, 0, Math.PI * 2)
+    ctx.arc(36, 46, 10, 0, Math.PI * 2)
     ctx.fill()
 
     ctx.textAlign = 'left'
     ctx.fillStyle = '#fbbf24'
-    ctx.font = '900 42px monospace'
-    ctx.letterSpacing = '5px'
-    ctx.fillText('ORBITAL METADATA', 105, 94)
+    ctx.font = '900 21px monospace'
+    ctx.fillText('ORBITAL METADATA', 55, 54)
 
     // 4. Primary Counter Card
     ctx.fillStyle = 'rgba(0, 0, 0, 0.85)'
     ctx.strokeStyle = 'rgba(249, 115, 22, 0.5)'
-    ctx.lineWidth = 3
-    ctx.fillRect(45, 140, 710, 320)
-    ctx.strokeRect(45, 140, 710, 320)
+    ctx.lineWidth = 2
+    ctx.fillRect(24, 76, 352, 160)
+    ctx.strokeRect(24, 76, 352, 160)
 
     ctx.textAlign = 'center'
     ctx.fillStyle = '#fed7aa'
-    ctx.font = '700 30px monospace'
-    ctx.fillText('TIME IN EARTH ORBIT', 400, 195)
+    ctx.font = '700 15px monospace'
+    ctx.fillText('TIME IN EARTH ORBIT', 200, 104)
 
     ctx.fillStyle = '#fbbf24'
-    ctx.font = '900 70px monospace'
-    ctx.shadowColor = 'rgba(249, 115, 22, 0.95)'
-    ctx.shadowBlur = 20
-    ctx.fillText(`DAY ${d.toLocaleString()}${frac}`, 400, 295)
-    ctx.shadowBlur = 0
+    ctx.font = '900 36px monospace'
+    ctx.fillText(`DAY ${d.toLocaleString()}${frac}`, 200, 154)
 
     ctx.fillStyle = '#ffffff'
-    ctx.font = '800 30px monospace'
-    ctx.fillText(`T+ ${h}:${m}:${s}  •  ${Number(orbits).toLocaleString()} REVS`, 400, 390)
+    ctx.font = '800 15px monospace'
+    ctx.fillText(`T+ ${h}:${m}:${s} • ${Number(orbits).toLocaleString()} REVS`, 200, 202)
 
     // 5. Aerospace Telemetry Specs
     const drawRow = (label: string, val: string, y: number, highlight = false) => {
       ctx.textAlign = 'left'
       ctx.fillStyle = '#fed7aa'
-      ctx.font = '700 28px monospace'
-      ctx.fillText(label, 60, y)
+      ctx.font = '700 14px monospace'
+      ctx.fillText(label, 30, y)
 
       ctx.textAlign = 'right'
       ctx.fillStyle = highlight ? '#fbbf24' : '#ffffff'
-      ctx.font = '900 32px monospace'
-      ctx.fillText(val, 740, y)
+      ctx.font = '900 15px monospace'
+      ctx.fillText(val, 370, y)
     }
 
-    drawRow('ALTITUDE:', '418.4 KM (LEO)', 530, true)
-    drawRow('VELOCITY:', '7.66 KM/S', 610, true)
-    drawRow('ORBIT SPEED:', '27,576 KM/H', 690)
-    drawRow('ORBITAL HOST:', 'EARTH (Alpha)', 770, true)
-    drawRow('INCLINATION:', '23.44°', 850)
-    drawRow('ORBIT PERIOD:', '92.68 MIN', 930)
-    drawRow('SOLAR FLUX:', '1,361 W/m²', 1010)
+    drawRow('ALTITUDE:', '418.4 KM (LEO)', 272, true)
+    drawRow('VELOCITY:', '7.66 KM/S', 312, true)
+    drawRow('ORBIT SPEED:', '27,576 KM/H', 352)
+    drawRow('ORBITAL HOST:', 'EARTH (Alpha)', 392, true)
+    drawRow('INCLINATION:', '23.44°', 432)
+    drawRow('ORBIT PERIOD:', '92.68 MIN', 472)
+    drawRow('SOLAR FLUX:', '1,361 W/m²', 512)
 
     // 6. Footer Status
     ctx.fillStyle = '#f97316'
-    ctx.fillRect(45, 1150, 710, 75)
+    ctx.fillRect(24, 570, 352, 42)
     ctx.fillStyle = '#140a05'
     ctx.textAlign = 'center'
-    ctx.font = '900 32px monospace'
-    ctx.fillText('STAGE STATUS: NOMINAL', 400, 1198)
+    ctx.font = '900 16px monospace'
+    ctx.fillText('STAGE STATUS: NOMINAL', 200, 597)
 
     texture.needsUpdate = true
   })
@@ -369,8 +368,8 @@ function BalaaRearMuralFace() {
 
   const { canvas, texture, ctx } = useMemo(() => {
     const c = document.createElement('canvas')
-    c.width = 1920
-    c.height = 760
+    c.width = 960
+    c.height = 380
     const context = c.getContext('2d')!
     const tex = new THREE.CanvasTexture(c)
     tex.colorSpace = THREE.SRGBColorSpace
@@ -379,6 +378,7 @@ function BalaaRearMuralFace() {
 
   const lastUpdate = useRef(0)
   const hasDrawnInitialRef = useRef(false)
+  const lastSlideRef = useRef(-1)
   const cameraMode = useAppStore((s) => s.cameraMode)
 
   useFrame(({ clock }) => {
@@ -386,16 +386,27 @@ function BalaaRearMuralFace() {
     if (cameraMode === 'artist' && hasDrawnInitialRef.current) return
 
     const time = clock.getElapsedTime()
-    // Throttle to 10fps when exploring behind stage
-    if (time - lastUpdate.current < 0.1) return
+    const cycleDuration = 6.0
+    const cycleTime = time % cycleDuration
+    const currentSlide = Math.floor(time / cycleDuration) % loadedMurals.length
+    const nextSlide = (currentSlide + 1) % loadedMurals.length
+    const isCrossfading = cycleTime > (cycleDuration - 1.2)
+    const fadeAlpha = isCrossfading ? (cycleTime - (cycleDuration - 1.2)) / 1.2 : 0
+
+    // Skip redundant updates when static
+    if (!isCrossfading && lastSlideRef.current === currentSlide && hasDrawnInitialRef.current) {
+      return
+    }
+
+    if (time - lastUpdate.current < 0.08 && hasDrawnInitialRef.current) return
     lastUpdate.current = time
     hasDrawnInitialRef.current = true
+    lastSlideRef.current = currentSlide
 
     const w = canvas.width
     const h = canvas.height
 
-    // Energetic Asymmetrical Street Art & Graffiti Composition
-    // 1. Dynamic background with subtle paint splatter / urban grid
+    // 1. Background
     const bgGrad = ctx.createLinearGradient(0, 0, w, h)
     bgGrad.addColorStop(0, '#0a0604')
     bgGrad.addColorStop(0.3, '#180d06')
@@ -404,33 +415,12 @@ function BalaaRearMuralFace() {
     ctx.fillStyle = bgGrad
     ctx.fillRect(0, 0, w, h)
 
-    // Street Art Tag Splashes / Stencil Backdrops
-    ctx.save()
-    ctx.strokeStyle = 'rgba(249, 115, 22, 0.25)'
-    ctx.lineWidth = 1.5
-    for (let i = 0; i < 18; i++) {
-      const sx = (i * 115) % w
-      const sy = 40 + (i * 65) % (h - 80)
-      ctx.beginPath()
-      ctx.moveTo(sx, sy)
-      ctx.lineTo(sx + 80, sy + 35)
-      ctx.stroke()
-    }
-    ctx.restore()
-
-    // Outer neon glowing graffiti frame
+    // Outer neon graffiti frame
     ctx.strokeStyle = '#f97316'
-    ctx.lineWidth = 5
-    ctx.strokeRect(16, 16, w - 32, h - 32)
+    ctx.lineWidth = 3
+    ctx.strokeRect(8, 8, w - 16, h - 16)
 
-    // Slideshow crossfade indexing
-    const cycleDuration = 6.0
-    const cycleTime = time % cycleDuration
-    const currentSlide = Math.floor(time / cycleDuration) % loadedMurals.length
-    const nextSlide = (currentSlide + 1) % loadedMurals.length
-    const fadeAlpha = cycleTime > (cycleDuration - 1.2) ? (cycleTime - (cycleDuration - 1.2)) / 1.2 : 0
-
-    // Helper: Draw Asymmetric Layered Graffiti Tile with rotation and tape accents
+    // Helper: Draw Tile
     const drawStreetTile = (
       img: HTMLImageElement | undefined,
       x: number,
@@ -448,86 +438,57 @@ function BalaaRearMuralFace() {
       ctx.rotate((rotDeg * Math.PI) / 180)
       ctx.translate(-(tw / 2), -(th / 2))
 
-      // Dark card base
       ctx.fillStyle = '#0f0a06'
       ctx.beginPath()
-      ctx.roundRect(0, 0, tw, th, 10)
+      ctx.roundRect(0, 0, tw, th, 6)
       ctx.fill()
 
       if (img && img.complete && img.naturalWidth > 0) {
         ctx.save()
         ctx.beginPath()
-        ctx.roundRect(0, 0, tw, th, 10)
+        ctx.roundRect(0, 0, tw, th, 6)
         ctx.clip()
         ctx.drawImage(img, 0, 0, tw, th)
-        
-        // Urban vignette
-        const vig = ctx.createLinearGradient(0, 0, 0, th)
-        vig.addColorStop(0, 'rgba(0,0,0,0.15)')
-        vig.addColorStop(0.7, 'rgba(0,0,0,0.25)')
-        vig.addColorStop(1, 'rgba(0,0,0,0.75)')
-        ctx.fillStyle = vig
-        ctx.fillRect(0, 0, tw, th)
         ctx.restore()
       }
 
-      // Glowing urban stroke
       ctx.strokeStyle = 'rgba(249, 115, 22, 0.65)'
-      ctx.lineWidth = 2.5
+      ctx.lineWidth = 1.5
       ctx.beginPath()
-      ctx.roundRect(0, 0, tw, th, 10)
+      ctx.roundRect(0, 0, tw, th, 6)
       ctx.stroke()
 
       // Duct Tape accent corner
       ctx.fillStyle = tapeColor
       ctx.globalAlpha = alpha * 0.85
-      ctx.fillRect(-12, -8, 48, 14)
-      ctx.fillRect(tw - 36, th - 6, 48, 14)
+      ctx.fillRect(-6, -4, 24, 7)
+      ctx.fillRect(tw - 18, th - 3, 24, 7)
       ctx.globalAlpha = alpha
-
-      // Street Badge
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.88)'
-      ctx.beginPath()
-      ctx.roundRect(12, th - 32, label.length * 8 + 22, 22, 5)
-      ctx.fill()
-      ctx.strokeStyle = '#fbbf24'
-      ctx.lineWidth = 1
-      ctx.stroke()
-
-      ctx.fillStyle = '#fbbf24'
-      ctx.font = '900 11px monospace'
-      ctx.letterSpacing = '1.5px'
-      ctx.textAlign = 'left'
-      ctx.fillText(label, 20, th - 17)
 
       ctx.restore()
     }
 
-    // Layered, Asymmetrical Collage Layout (Energetic Street Art Composition)
-    // Left Overlapping Flank
-    drawStreetTile(loadedMurals[(currentSlide + 1) % loadedMurals.length], 45, 40, 430, 310, 'STREET ART • 01', -1.2)
-    drawStreetTile(loadedMurals[(currentSlide + 2) % loadedMurals.length], 65, 385, 410, 320, 'BALAA GRAFFITI • 02', 1.5, 1.0, '#ef4444')
+    // Left Flank
+    drawStreetTile(loadedMurals[(currentSlide + 1) % loadedMurals.length], 25, 20, 215, 155, 'STREET ART', -1.2)
+    drawStreetTile(loadedMurals[(currentSlide + 2) % loadedMurals.length], 35, 195, 205, 160, 'GRAFFITI', 1.5, 1.0, '#ef4444')
 
-    // Right Overlapping Flank
-    drawStreetTile(loadedMurals[(currentSlide + 3) % loadedMurals.length], 1445, 45, 430, 310, 'URBAN MURAL • 03', 1.4)
-    drawStreetTile(loadedMurals[(currentSlide + 4) % loadedMurals.length], 1430, 385, 430, 320, 'HIP-HOP ARCHIVE • 04', -1.1, 1.0, '#06b6d4')
+    // Right Flank
+    drawStreetTile(loadedMurals[(currentSlide + 3) % loadedMurals.length], 720, 20, 215, 155, 'URBAN MURAL', 1.4)
+    drawStreetTile(loadedMurals[(currentSlide + 4) % loadedMurals.length], 715, 195, 215, 160, 'HIP-HOP', -1.1, 1.0, '#06b6d4')
 
-    // Center Grand Hero Wall Piece
+    // Center Hero Piece
     const heroImg = loadedMurals[currentSlide]
-    drawStreetTile(heroImg, 495, 45, 930, 660, `BALAA EXHIBIT • 0${currentSlide + 1}`, 0, 1.0, '#f97316')
+    drawStreetTile(heroImg, 250, 20, 460, 330, `BALAA EXHIBIT 0${currentSlide + 1}`, 0, 1.0, '#f97316')
     if (fadeAlpha > 0) {
-      drawStreetTile(loadedMurals[nextSlide], 495, 45, 930, 660, `BALAA EXHIBIT • 0${nextSlide + 1}`, 0, fadeAlpha, '#f97316')
+      drawStreetTile(loadedMurals[nextSlide], 250, 20, 460, 330, `BALAA EXHIBIT 0${nextSlide + 1}`, 0, fadeAlpha, '#f97316')
     }
 
-    // Header: Centered energetic glowing BALAA STUDIOS graffiti piece
+    // Header
     ctx.save()
     ctx.textAlign = 'center'
-    ctx.shadowColor = 'rgba(249, 115, 22, 0.95)'
-    ctx.shadowBlur = 28
     ctx.fillStyle = '#fbbf24'
-    ctx.font = '900 36px monospace'
-    ctx.letterSpacing = '10px'
-    ctx.fillText('BALAA STUDIOS', w / 2, 95)
+    ctx.font = '900 20px monospace'
+    ctx.fillText('BALAA STUDIOS', w / 2, 45)
     ctx.restore()
 
     texture.needsUpdate = true

@@ -220,22 +220,29 @@ function UniversalCosmicMotion() {
 
   const particleTex = useMemo(() => {
     const canvas = document.createElement('canvas')
-    canvas.width = 64
-    canvas.height = 64
+    canvas.width = 32
+    canvas.height = 32
     const ctx = canvas.getContext('2d')!
-    const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32)
+    const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16)
     grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)')
     grad.addColorStop(0.35, 'rgba(147, 197, 253, 0.85)')
     grad.addColorStop(0.7, 'rgba(56, 189, 248, 0.25)')
     grad.addColorStop(1, 'rgba(0, 0, 0, 0)')
     ctx.fillStyle = grad
-    ctx.fillRect(0, 0, 64, 64)
+    ctx.fillRect(0, 0, 32, 32)
     const tex = new THREE.CanvasTexture(canvas)
     tex.needsUpdate = true
     return tex
   }, [])
 
-  useFrame((_, delta) => {
+  const lastUpdate = useRef(0)
+
+  useFrame(({ clock }, delta) => {
+    const time = clock.getElapsedTime()
+    if (time - lastUpdate.current < 0.033) return // Cap particle array updates to 30fps to avoid main thread bottlenecks
+    const dt = Math.min(delta, 0.05)
+    lastUpdate.current = time
+
     const pulse = isPlaying ? (audioPulse || 0) : 0
     const speedBoost = 1.0 + pulse * 0.8
 
@@ -244,9 +251,9 @@ function UniversalCosmicMotion() {
       const posArr = posAttr.array as Float32Array
 
       for (let i = 0; i < NUM_COSMIC_DUST; i++) {
-        posArr[i * 3] += dustVelocities[i * 3] * delta * speedBoost
-        posArr[i * 3 + 1] += dustVelocities[i * 3 + 1] * delta * speedBoost
-        posArr[i * 3 + 2] += dustVelocities[i * 3 + 2] * delta * speedBoost
+        posArr[i * 3] += dustVelocities[i * 3] * dt * speedBoost
+        posArr[i * 3 + 1] += dustVelocities[i * 3 + 1] * dt * speedBoost
+        posArr[i * 3 + 2] += dustVelocities[i * 3 + 2] * dt * speedBoost
 
         if (posArr[i * 3 + 2] < -2000) {
           posArr[i * 3 + 2] = 1200
@@ -261,9 +268,9 @@ function UniversalCosmicMotion() {
 
       for (let i = 0; i < NUM_SHOOTING_STARS; i++) {
         const idx = i * 6
-        const vx = meteorVelocities[i * 3] * delta * speedBoost
-        const vy = meteorVelocities[i * 3 + 1] * delta * speedBoost
-        const vz = meteorVelocities[i * 3 + 2] * delta * speedBoost
+        const vx = meteorVelocities[i * 3] * dt * speedBoost
+        const vy = meteorVelocities[i * 3 + 1] * dt * speedBoost
+        const vz = meteorVelocities[i * 3 + 2] * dt * speedBoost
 
         posArr[idx] += vx
         posArr[idx + 1] += vy
@@ -660,6 +667,26 @@ const GRAND_SOLAR_PLANETS: GrandPlanetConfig[] = [
   },
 ]
 
+// Shared radiant celestial atmospheric glow halo texture for all planets
+let _sharedPlanetGlowTexture: THREE.CanvasTexture | null = null
+function getSharedPlanetGlowTexture(): THREE.CanvasTexture {
+  if (!_sharedPlanetGlowTexture) {
+    const canvas = document.createElement('canvas')
+    canvas.width = 64
+    canvas.height = 64
+    const ctx = canvas.getContext('2d')!
+    const grad = ctx.createRadialGradient(32, 32, 8, 32, 32, 32)
+    grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)')
+    grad.addColorStop(0.45, 'rgba(255, 255, 255, 0.85)')
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)')
+    ctx.fillStyle = grad
+    ctx.fillRect(0, 0, 64, 64)
+    _sharedPlanetGlowTexture = new THREE.CanvasTexture(canvas)
+    _sharedPlanetGlowTexture.needsUpdate = true
+  }
+  return _sharedPlanetGlowTexture
+}
+
 function GrandKeplerianPlanet({
   config,
   baseGeometry,
@@ -681,22 +708,7 @@ function GrandKeplerianPlanet({
     })
   }, [config])
 
-  // Custom celestial atmospheric glow halo texture for each planet
-  const glowTexture = useMemo(() => {
-    const canvas = document.createElement('canvas')
-    canvas.width = 128
-    canvas.height = 128
-    const ctx = canvas.getContext('2d')!
-    const grad = ctx.createRadialGradient(64, 64, 18, 64, 64, 64)
-    grad.addColorStop(0, config.color)
-    grad.addColorStop(0.45, config.color)
-    grad.addColorStop(1, 'rgba(0, 0, 0, 0)')
-    ctx.fillStyle = grad
-    ctx.fillRect(0, 0, 128, 128)
-    const tex = new THREE.CanvasTexture(canvas)
-    tex.needsUpdate = true
-    return tex
-  }, [config.color])
+  const glowTexture = useMemo(() => getSharedPlanetGlowTexture(), [])
 
   useFrame(({ clock }, delta) => {
     const time = clock.getElapsedTime()
@@ -756,6 +768,7 @@ function GrandKeplerianPlanet({
           <planeGeometry args={[1, 1]} />
           <meshBasicMaterial
             map={glowTexture}
+            color={config.color}
             transparent={true}
             opacity={0.68}
             fog={false}
