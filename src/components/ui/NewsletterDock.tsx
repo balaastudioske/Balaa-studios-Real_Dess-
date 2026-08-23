@@ -60,7 +60,7 @@ export function NewsletterDock() {
             <div className="flex items-center gap-1.5 text-amber-400">
               <Mail className="h-4 w-4 text-orange-400" />
               <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em]">
-                BALAA INSIDER DROP
+                VIP COLLECTOR NEWSLETTER
               </span>
             </div>
             <button
@@ -72,13 +72,13 @@ export function NewsletterDock() {
           </div>
 
           <p className="mt-2.5 text-xs leading-relaxed text-orange-100/80 font-sans">
-            Get exclusive Real Des master stem drops, secret merch discount codes, and VIP invites to live virtual stage events.
+            Join the VIP Collector Newsletter for exclusive REAL_DESS track releases, master stem drops, behind-the-scenes production, and artist education.
           </p>
 
           {subscribed ? (
             <div className="mt-3.5 flex items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-950/40 p-3 font-mono text-xs font-bold text-emerald-300 animate-in fade-in">
               <Check className="h-4 w-4" />
-              <span>You're on the VIP list!</span>
+              <span>You're subscribed to REAL_DESS VIP Drops!</span>
             </div>
           ) : (
             <form onSubmit={handleSubscribe} className="mt-3 space-y-2 font-mono">
@@ -107,7 +107,7 @@ export function NewsletterDock() {
                   </>
                 ) : (
                   <>
-                    <span>Join VIP Drops</span>
+                    <span>Join VIP Collector Drops</span>
                     <Send className="h-3.5 w-3.5" />
                   </>
                 )}

@@ -436,73 +436,74 @@ function BalaaPanel({ mode, onClose }: { mode: 'services' | 'support'; onClose: 
            )}
         </div>
       ) : (
-        /* Support Mode */
+        /* Support Mode — Open Community Donation */
         <div className="mt-3 space-y-3">
-          <h2 className="text-lg font-black uppercase tracking-tight text-white">
-            Fuel Independent African Artistry
+          <h2 className="text-base font-black uppercase tracking-tight text-white flex items-center gap-2">
+            <span>Fuel Independent African Artistry</span>
           </h2>
           <p className="text-xs leading-relaxed text-orange-100/80 font-sans">
-            Your direct support funds recording sessions, high-definition visual productions, sound engineering, 3D performance infrastructure, and independent releases for Real Des.
+            Direct community backing powers 3D motion capture animation, Dolby Atmos engineering, raw studio production, and free virtual live performances for REAL_DESS.
           </p>
 
-          <div className="rounded-xl border border-orange-500/20 bg-neutral-950/80 p-3.5 space-y-2.5 font-mono text-xs">
-            <div className="flex justify-between items-center text-orange-200">
-              <span>M-Pesa Till:</span>
-              <button onClick={copyTill} className="font-bold text-amber-400 hover:underline">
-                {MPESA_TILL_NUMBER} {copied ? '(Copied)' : ''}
-              </button>
+          {/* Massive Prominent Till Banner */}
+          <div className="p-4 rounded-2xl border-2 border-orange-500/60 bg-gradient-to-br from-orange-500/20 via-black to-amber-500/10 text-center shadow-[0_0_30px_rgba(249,115,22,0.25)] space-y-2">
+            <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-orange-400">
+              Safaricom M-Pesa Buy Goods Till
             </div>
-            <div className="flex justify-between items-center text-orange-200">
-              <span>Account / Reference:</span>
-              <span className="font-bold text-orange-300">REAL DESS SUPPORT</span>
+            <div className="text-3xl sm:text-4xl font-black text-white tracking-widest font-mono select-all drop-shadow-[0_0_12px_rgba(249,115,22,0.6)]">
+              {MPESA_TILL_NUMBER}
             </div>
-             <div className="flex justify-between items-center text-orange-200">
-               <span>Pledge Amount:</span>
-               <div className="flex items-center gap-1 font-mono text-[10px]">
-                 {[100, 500, 2000].map((amt) => (
-                   <button
-                     key={amt}
-                     onClick={() => setPledgeAmount(amt)}
-                     className={`rounded px-2 py-1 font-bold transition ${
-                       pledgeAmount === amt
-                         ? 'bg-[#f97316] text-[#140a05]'
-                         : 'text-orange-200/80 hover:text-white bg-black/40 border border-orange-950/80'
-                     }`}
-                   >
-                     {amt} KSh
-                   </button>
-                 ))}
-               </div>
-             </div>
-           </div>
+            <p className="text-[10px] text-orange-200/80">Merchant: BALAA STUDIOS</p>
+            <button
+              onClick={copyTill}
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-orange-500 hover:bg-orange-400 text-black font-black uppercase text-[10px] tracking-wider transition active:scale-95 shadow-md shadow-orange-500/30"
+            >
+              {copied ? 'TILL COPIED TO CLIPBOARD!' : 'COPY TILL NUMBER'}
+            </button>
+          </div>
 
-           {currentOrder ? (
-             <OrderPendingCard
-               order={currentOrder}
-               isConfirmed={isConfirmed}
-               onReset={() => {
-                 setCurrentOrder(null)
-                 setIsConfirmed(false)
-               }}
-             />
-           ) : (
-             <button
-               onClick={() =>
-                 submitOrder({
-                   type: 'support',
-                   itemId: 'artist-support',
-                   itemTitle: 'Artist Backing — Real Des',
-                   amount: pledgeAmount,
-                   currency: 'KSH',
-                   metadata: { notes: `Pledge of KSh ${pledgeAmount}` },
-                 })
-               }
-               disabled={submitting}
-               className="w-full rounded-xl bg-gradient-to-r from-[#f97316] to-[#fb923c] py-3.5 text-center font-mono text-xs font-black uppercase tracking-wider text-[#140a05] shadow-lg shadow-orange-500/25 hover:brightness-110 active:scale-[0.98] transition disabled:opacity-50"
-             >
-               {submitting ? 'Creating Order…' : `Pledge KSh ${pledgeAmount} Artist Support`}
-             </button>
-           )}
+          {/* Open Custom Donation Amount */}
+          <div className="rounded-xl border border-orange-500/20 bg-neutral-950/80 p-3 space-y-2 font-mono text-xs">
+            <label className="text-[10.5px] font-bold text-orange-300 uppercase tracking-wider block">
+              Enter Custom Contribution (KSh):
+            </label>
+            <input
+              type="number"
+              min="10"
+              value={pledgeAmount}
+              onChange={(e) => setPledgeAmount(Math.max(1, Number(e.target.value) || 0))}
+              placeholder="Enter any amount..."
+              className="w-full bg-neutral-900 border border-orange-500/30 rounded-xl px-3.5 py-2.5 text-white font-bold text-sm focus:outline-none focus:border-orange-500"
+            />
+          </div>
+
+          {currentOrder ? (
+            <OrderPendingCard
+              order={currentOrder}
+              isConfirmed={isConfirmed}
+              onReset={() => {
+                setCurrentOrder(null)
+                setIsConfirmed(false)
+              }}
+            />
+          ) : (
+            <button
+              onClick={() =>
+                submitOrder({
+                  type: 'support',
+                  itemId: 'artist-support',
+                  itemTitle: 'Artist Backing — REAL_DESS',
+                  amount: pledgeAmount,
+                  currency: 'KSH',
+                  metadata: { notes: `Pledge of KSh ${pledgeAmount}` },
+                })
+              }
+              disabled={submitting || pledgeAmount <= 0}
+              className="w-full rounded-xl bg-gradient-to-r from-[#f97316] to-[#fb923c] py-3.5 text-center font-mono text-xs font-black uppercase tracking-wider text-[#140a05] shadow-lg shadow-orange-500/25 hover:brightness-110 active:scale-[0.98] transition disabled:opacity-50"
+            >
+              {submitting ? 'Submitting…' : `Support REAL_DESS with KSh ${pledgeAmount}`}
+            </button>
+          )}
         </div>
       )}
     </section>

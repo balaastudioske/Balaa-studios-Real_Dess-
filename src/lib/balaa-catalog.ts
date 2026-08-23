@@ -9,7 +9,7 @@ export interface MediaCatalogItem {
   category: 'music'
 }
 
-/** Direct Song Master Licensing tiers with dual KSh (KES) and USD ($) pricing */
+/** Direct Song Master Licensing tiers with USD ($) and KES (KSh) pricing */
 export interface MasterLicense {
   id: string
   name: string
@@ -20,6 +20,7 @@ export interface MasterLicense {
   rights: string[]
   recommended?: boolean
   popular?: boolean
+  badge?: string
 }
 
 /** Legacy type alias for compatibility */
@@ -27,76 +28,64 @@ export type LicenseTier = MasterLicense
 
 export const REAL_DESS_MASTER_LICENSES: MasterLicense[] = [
   {
-    id: 'kiosk',
-    name: 'Kiosk / Small Business',
-    priceKsh: 100,
-    priceUsd: 1,
-    unit: 'per song',
-    description: 'Play this REAL_DESS song in your shop, salon, boutique, barbershop, or cafe.',
+    id: 'creator',
+    name: 'Content Creator',
+    priceKsh: 200,
+    priceUsd: 2,
+    unit: 'per track',
+    description: 'Use this REAL_DESS song in your digital content across YouTube, TikTok, Instagram Reels, and podcasts.',
     rights: [
-      'Public background playback in your physical venue',
-      'Lossless 24-bit studio master audio download',
-      'Official artist authorization certificate',
-      'Direct contribution to independent Kenyan artistry',
+      'Worldwide social video & podcast synchronization rights',
+      'YouTube, Twitch, TikTok, & Instagram monetization clearance',
+      'Lossless 24-bit studio master WAV & high-res MP3 stems',
+      'Perpetual worldwide digital creator license',
+    ],
+  },
+  {
+    id: 'business_dj',
+    name: 'Business & DJ Performance',
+    priceKsh: 500,
+    priceUsd: 4,
+    unit: 'per track',
+    description: 'Use in DJ festival sets, nightclubs, physical venues, retail atmospheres, and corporate events.',
+    rights: [
+      'Live venue sound system & DJ set public performance playback',
+      'Retail space, gym, club, and lounge ambient sync clearance',
+      'Full extended club mix & instrumental stems package',
+      'Commercial public performance authorization certificate',
     ],
     popular: true,
   },
   {
-    id: 'creator',
-    name: 'Creator / Social Media',
-    priceKsh: 300,
-    priceUsd: 3,
-    unit: 'per song',
-    description: 'Use this REAL_DESS song in your social content across TikTok, Instagram Reels, and YouTube Shorts.',
+    id: 'commercial',
+    name: 'Commercial Advertising',
+    priceKsh: 700,
+    priceUsd: 5,
+    unit: 'per track',
+    description: 'Use in paid digital ad campaigns, brand marketing films, promotional cinema reels, and game trailers.',
     rights: [
-      'Worldwide social video monetization rights',
-      'Up to 250,000 video views / streams coverage',
-      'Lossless 24-bit master WAV audio track',
-      'Automatic YouTube Content ID whitelist',
+      'Global paid digital advertising campaigns (Meta, Google, TikTok Ads)',
+      'Game, mobile app, and cinematic trailer master synchronization',
+      'Full multi-track production stem archive',
+      'Commercial advertising sync authorization agreement',
     ],
     recommended: true,
   },
   {
-    id: 'business',
-    name: 'Business / Events / DJ',
-    priceKsh: 1000,
-    priceUsd: 10,
-    unit: 'per song',
-    description: 'Use in business presentations, corporate videos, live events, DJ festival sets, parties, and fashion shows.',
-    rights: [
-      'Corporate video, app, podcast, and event sync rights',
-      'Live venue sound system and DJ set performance playback',
-      'Lossless 24-bit master recording WAV file',
-      'Commercial clearance and event marketing coverage',
-    ],
-  },
-  {
-    id: 'commercial',
-    name: 'Commercial & Advertising',
-    priceKsh: 2500,
-    priceUsd: 25,
-    unit: 'per campaign',
-    description: 'Use in paid digital ads, brand campaigns, promotional cinema reels, and commercial video releases.',
-    rights: [
-      'Paid social media and digital web advertising clearance',
-      'Full instrumental and vocal master files',
-      'Perpetual digital advertising master license',
-      'Commercial brand sync authorization',
-    ],
-  },
-  {
     id: 'premium',
-    name: 'Premium / Broadcast / Film',
-    priceKsh: 10000,
-    priceUsd: 100,
-    unit: 'per production',
-    description: 'National TV broadcast, feature film sync, global OTT streaming, major brand campaigns, and exclusive licensing.',
+    name: 'Premium Events & Festivals',
+    priceKsh: 900,
+    priceUsd: 7,
+    unit: 'per track',
+    description: 'Live stadium concerts, broadcast festivals, national TV broadcast, OTT streaming, and major event sync.',
     rights: [
-      'Worldwide theatrical, television, and global streaming synchronization',
-      'Unlimited commercial distribution and reproduction rights',
-      'Complete multi-track stem archive & master cue-sheet data',
-      'Dedicated Real Des management coordination',
+      'Live arena and stadium festival performance synchronization',
+      'Worldwide theatrical, national TV broadcast, and global OTT streaming',
+      'Complete master & publishing rights clearance',
+      'Direct REAL_DESS sample and live remix authorization',
+      'Dedicated master synchronization legal contract and cue-sheet',
     ],
+    badge: 'Ultimate Tier',
   },
 ]
 
@@ -104,18 +93,17 @@ export const REAL_DESS_MASTER_LICENSES: MasterLicense[] = [
 export const REAL_DESS_LICENSE_TIERS = REAL_DESS_MASTER_LICENSES
 
 export const REAL_DESS_MASTER_LICENSE_PRICES = {
-  kiosk: 1,
-  creator: 3,
-  business: 10,
-  commercial: 25,
-  premium: 100,
+  creator: 200,
+  business_dj: 500,
+  commercial: 700,
+  premium: 900,
 } as const
 
 /** Legacy alias */
 export const REAL_DESS_LICENSE_PRICES = REAL_DESS_MASTER_LICENSE_PRICES
 export type RealDessLicenseTier = keyof typeof REAL_DESS_MASTER_LICENSE_PRICES
 
-/** Authoritative Creative Production & Hire Services from RealDess Vault */
+/** Authoritative Creative Production & Hire Services from REAL_DESS Vault (Reduced by 23%) */
 export interface CreativeService {
   id: string
   name: string
@@ -130,20 +118,20 @@ export interface CreativeService {
 export const REAL_DESS_SERVICES: CreativeService[] = [
   {
     id: 'performing',
-    name: 'Live Performance',
-    priceKsh: 7000,
-    priceUsd: 70,
-    unit: 'From KSh 7,000',
-    description: 'Curated high-energy live stage performance, headline club sets, and festival appearances by Real Des.',
+    name: 'Live Performance & Headline Set',
+    priceKsh: 5390,
+    priceUsd: 54,
+    unit: 'From KSh 5,390',
+    description: 'Curated high-energy live stage performance, headline club sets, and festival appearances by REAL_DESS.',
     deliverables: ['Live performance vocal set', 'Custom concert intro & DJ playback bundle', 'Direct artist soundcheck & rider coordination'],
     startingPrice: true,
   },
   {
     id: 'appearance',
-    name: 'Artist Appearance & Host',
-    priceKsh: 2000,
-    priceUsd: 20,
-    unit: 'From KSh 2,000',
+    name: 'Artist Appearance & VIP Host',
+    priceKsh: 1540,
+    priceUsd: 15,
+    unit: 'From KSh 1,540',
     description: 'VIP artist guest appearance, brand event walkthrough, red carpet, and meet & greet hosting.',
     deliverables: ['Event guest attendance & photo op', 'Social media story shoutout', 'Exclusive VIP activation presence'],
     startingPrice: true,
@@ -151,9 +139,9 @@ export const REAL_DESS_SERVICES: CreativeService[] = [
   {
     id: 'recording',
     name: 'Studio & Vocal Sessions',
-    priceKsh: 6500,
-    priceUsd: 65,
-    unit: 'From KSh 6,500',
+    priceKsh: 5005,
+    priceUsd: 50,
+    unit: 'From KSh 5,005',
     description: 'Professional in-studio vocal tracking, lead/backing harmonization, and master demo capture.',
     deliverables: ['Studio vocal tracking session', 'Tuned vocal stems (24-bit WAV)', 'Raw + processed take archive'],
     startingPrice: true,
@@ -161,9 +149,9 @@ export const REAL_DESS_SERVICES: CreativeService[] = [
   {
     id: 'video-production',
     name: 'Video Editing & Colour Grade',
-    priceKsh: 5000,
-    priceUsd: 50,
-    unit: 'From KSh 5,000',
+    priceKsh: 3850,
+    priceUsd: 38,
+    unit: 'From KSh 3,850',
     description: 'Complete post-production pipeline including story editing, filmic color grading, stylized FX, and final delivery.',
     deliverables: ['Full video final edit', 'Film emulation color grading', '16:9 master + 9:16 social cutdowns'],
     startingPrice: true,
@@ -171,9 +159,9 @@ export const REAL_DESS_SERVICES: CreativeService[] = [
   {
     id: 'video-shooting',
     name: 'Music Video Production',
-    priceKsh: 25000,
-    priceUsd: 250,
-    unit: 'From KSh 25,000',
+    priceKsh: 19250,
+    priceUsd: 192,
+    unit: 'From KSh 19,250',
     description: 'On-location music video cinematography, performance capture, lighting and director of photography.',
     deliverables: ['Cinema multi-cam shoot', 'Directorial performance guidance', 'Raw footage rushes transfer'],
     startingPrice: true,
@@ -181,9 +169,9 @@ export const REAL_DESS_SERVICES: CreativeService[] = [
   {
     id: 'content-creation',
     name: 'Short-Form Content & Reels',
-    priceKsh: 5000,
-    priceUsd: 50,
-    unit: 'From KSh 5,000',
+    priceKsh: 3850,
+    priceUsd: 38,
+    unit: 'From KSh 3,850',
     description: 'High-impact short-form videos, teasers, behind-the-scenes reels, and launch assets tailored for TikTok & IG.',
     deliverables: ['Edited vertical video reels', 'Motion typography & custom sound design', 'Optimized release schedule strategy'],
     startingPrice: true,
@@ -191,9 +179,9 @@ export const REAL_DESS_SERVICES: CreativeService[] = [
   {
     id: 'creative-direction',
     name: 'Creative Direction & Identity',
-    priceKsh: 5000,
-    priceUsd: 50,
-    unit: 'From KSh 5,000',
+    priceKsh: 3850,
+    priceUsd: 38,
+    unit: 'From KSh 3,850',
     description: 'Cohesive visual identity, album art concept, stage styling, typography, and 3D virtual world aesthetics.',
     deliverables: ['Complete artist brand styleguide', 'Cover artwork design direction', 'Stage visualizer & set aesthetic deck'],
     startingPrice: true,
@@ -201,21 +189,11 @@ export const REAL_DESS_SERVICES: CreativeService[] = [
   {
     id: 'songwriting',
     name: 'Songwriting & Toplines',
-    priceKsh: 5000,
-    priceUsd: 50,
-    unit: 'From KSh 5,000',
+    priceKsh: 3850,
+    priceUsd: 38,
+    unit: 'From KSh 3,850',
     description: 'Hit-ready melody creation, hook composition, lyrical architecture, and arrangement collaboration.',
     deliverables: ['Full vocal melody guide demo', 'Lyric sheet & timing guide', 'Commercial publishing clearance'],
-    startingPrice: true,
-  },
-  {
-    id: 'licensing',
-    name: 'Song Master Licensing',
-    priceKsh: 100,
-    priceUsd: 1,
-    unit: 'From KSh 100',
-    description: 'Direct master sound recording licensing for shops, social creators, events, films, and commercial campaigns.',
-    deliverables: ['Direct artist master license', '24-bit lossless master WAV', 'Commercial usage clearance'],
     startingPrice: true,
   },
 ]

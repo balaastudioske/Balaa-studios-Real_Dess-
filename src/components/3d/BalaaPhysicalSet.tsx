@@ -87,7 +87,7 @@ function PaybillSignFace() {
 
     context.fillStyle = '#ffffff'
     context.font = '900 23px Arial, sans-serif'
-    context.fillText('REAL DESS VAULT', 200, 460)
+    context.fillText('REAL_DESS VAULT', 200, 460)
 
     context.fillStyle = '#e8ffea'
     context.font = '700 17px Arial, sans-serif'
