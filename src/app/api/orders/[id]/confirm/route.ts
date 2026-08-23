@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/firebase'
-import { doc, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore'
+import { getSupabaseServerClient } from '@/lib/supabase'
 import { hasAdminSession } from '@/lib/admin-auth'
 
 export async function POST(
@@ -15,18 +14,17 @@ export async function POST(
     const { id } = await context.params
     const body = await req.json().catch(() => ({}))
     const status = body.status || 'confirmed' // 'confirmed' | 'cancelled' | 'pending'
-
-    const orderRef = doc(db, 'orders', id)
     const nowIso = new Date().toISOString()
 
-    try {
-      await updateDoc(orderRef, {
-        status,
-        confirmedAt: status === 'confirmed' ? serverTimestamp() : null,
-        updatedAt: serverTimestamp(),
-      })
-    } catch (fsErr) {
-      console.warn('[Confirm Order API] Firestore update fallback:', fsErr)
+    const supabase = getSupabaseServerClient()
+    const { error: dbError } = await supabase.from('orders').update({
+      status,
+      confirmed_at: status === 'confirmed' ? nowIso : null,
+      updated_at: nowIso,
+    }).eq('id', id)
+
+    if (dbError) {
+      console.warn('[Confirm Order API] Supabase update warning:', dbError.message)
     }
 
     return NextResponse.json({

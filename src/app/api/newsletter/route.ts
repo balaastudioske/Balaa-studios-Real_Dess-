@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/firebase'
-import { collection, doc, setDoc, getDocs, serverTimestamp, query, orderBy } from 'firebase/firestore'
+import { getSupabaseServerClient } from '@/lib/supabase'
 import { hasAdminSession } from '@/lib/admin-auth'
 
-// In-memory fallback if Firestore is not configured in local environment
+// In-memory fallback if needed
 const localSubscribers = new Map<string, any>()
 
 export async function POST(req: NextRequest) {
@@ -15,23 +14,26 @@ export async function POST(req: NextRequest) {
     }
 
     const cleanEmail = email.trim().toLowerCase()
+    const nowIso = new Date().toISOString()
     const record = {
+      id: cleanEmail,
       email: cleanEmail,
       source,
       status: 'active',
-      createdAt: new Date().toISOString(),
+      created_at: nowIso,
     }
 
     try {
-      const subscriberDoc = doc(db, 'subscribers', cleanEmail)
-      await setDoc(subscriberDoc, {
-        email: cleanEmail,
-        source,
-        status: 'active',
-        createdAt: serverTimestamp(),
-      }, { merge: true })
-    } catch (fsError) {
-      console.warn('[Newsletter API] Firestore write fallback to local memory:', fsError)
+      const supabase = getSupabaseServerClient()
+      const { error: dbError } = await supabase.from('newsletter_subscribers').upsert(record, {
+        onConflict: 'email',
+      })
+      if (dbError) {
+        console.warn('[Newsletter API] Supabase write fallback:', dbError.message)
+        localSubscribers.set(cleanEmail, record)
+      }
+    } catch (dbErr) {
+      console.warn('[Newsletter API] Supabase write error:', dbErr)
       localSubscribers.set(cleanEmail, record)
     }
 
@@ -49,19 +51,37 @@ export async function GET() {
   try {
     const subscribers: any[] = []
     try {
-      const q = query(collection(db, 'subscribers'), orderBy('createdAt', 'desc'))
-      const snapshot = await getDocs(q)
-      snapshot.forEach((doc) => {
-        subscribers.push({ id: doc.id, ...doc.data() })
-      })
-    } catch (fsError) {
-      console.warn('[Newsletter API] Firestore read fallback to local memory:', fsError)
+      const supabase = getSupabaseServerClient()
+      const { data, error } = await supabase
+        .from('newsletter_subscribers')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (data && !error) {
+        data.forEach((doc) => {
+          subscribers.push({
+            id: doc.id || doc.email,
+            email: doc.email,
+            source: doc.source,
+            status: doc.status,
+            createdAt: doc.created_at,
+          })
+        })
+      }
+    } catch (dbErr) {
+      console.warn('[Newsletter API] Supabase read fallback:', dbErr)
     }
 
     // Merge in-memory subscribers if any
     localSubscribers.forEach((val, key) => {
       if (!subscribers.some((s) => s.email === key)) {
-        subscribers.push({ id: key, ...val })
+        subscribers.push({
+          id: key,
+          email: val.email,
+          source: val.source,
+          status: val.status,
+          createdAt: val.created_at,
+        })
       }
     })
 

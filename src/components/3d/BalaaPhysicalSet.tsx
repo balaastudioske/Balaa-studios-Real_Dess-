@@ -587,12 +587,24 @@ export function BalaaPhysicalSet({ onNavigate }: { onNavigate?: (mode: BalaaStag
         <OrbitalMetadataPoleBannerFace />
       </group>
 
-      {/* Fashion/merch left — actual final garment GLBs on a showroom rail. */}
+      {/* Fashion/merch left — showroom rail with non-blocking progressive stream. */}
       <group name="BALAA_MERCH_LEFT">
         {Array.from({ length: 9 }, (_, index) => {
           const id = `merch-${String(index + 1).padStart(2, '0')}`
           const item = layout(id)
-          return <Float key={id} speed={0.7 + index * 0.04} floatIntensity={0.13} rotationIntensity={0.015}><TexturedMerchGarment look={index + 1} position={item.position} rotation={item.rotation} maxExtent={item.targetHeight} onClick={() => { selectLayoutItem(id); selectGarment(`look_${String(index + 1).padStart(2, '0')}`) }} /></Float>
+          return (
+            <Suspense key={id} fallback={<StudioFallback position={item.position} targetHeight={item.targetHeight} />}>
+              <Float speed={0.7 + index * 0.04} floatIntensity={0.13} rotationIntensity={0.015}>
+                <TexturedMerchGarment
+                  look={index + 1}
+                  position={item.position}
+                  rotation={item.rotation}
+                  maxExtent={item.targetHeight}
+                  onClick={() => { selectLayoutItem(id); selectGarment(`look_${String(index + 1).padStart(2, '0')}`) }}
+                />
+              </Float>
+            </Suspense>
+          )
         })}
         <mesh position={[-5.8, 0.08, -1.45]}><boxGeometry args={[3.8, 0.16, 0.72]} /><meshStandardMaterial color="#181818" metalness={0.72} roughness={0.33} /></mesh>
       </group>

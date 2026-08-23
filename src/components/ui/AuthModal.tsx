@@ -51,13 +51,13 @@ export function AuthModal() {
         await signInWithEmail(email, password)
       }
     } catch (err: any) {
-      const code = err?.code
-      if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
+      const msg = err?.message || ''
+      if (/invalid login|invalid-credential|wrong-password|user-not-found/i.test(msg)) {
         setError('Invalid email or password.')
-      } else if (code === 'auth/email-already-in-use') {
+      } else if (/already registered|already in use|unique constraint/i.test(msg)) {
         setError('An account with this email already exists. Please sign in.')
       } else {
-        setError(err?.message || 'Authentication failed. Please check your credentials.')
+        setError(msg || 'Authentication failed. Please check your credentials.')
       }
     } finally {
       setLoading(false)

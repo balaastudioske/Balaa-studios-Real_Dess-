@@ -485,8 +485,8 @@ export const StageViewport = ({ className = '', conceptMode = false, activeMode 
       {/* 3D Canvas with WebGL Resilience Boundary */}
       <WebGLErrorBoundary>
         <Canvas
-          camera={{ fov: 44, near: 0.1, far: 30000, position: [0, 1.8, 6.2] }}
-          dpr={[1, 1.25]}
+          camera={{ fov: 46, near: 0.1, far: 30000, position: [0, 2.3, 7.8] }}
+          dpr={[1, 1.2]}
           shadows="basic"
           frameloop="always"
           gl={{
@@ -536,7 +536,7 @@ export const StageViewport = ({ className = '', conceptMode = false, activeMode 
           <OrbitControls
             ref={controlsRef}
             makeDefault
-            target={[0, 1.2, 0]}
+            target={[0, 1.1, 0]}
             enableDamping={true}
             dampingFactor={0.05}
             rotateSpeed={0.48}

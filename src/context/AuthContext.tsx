@@ -1,79 +1,84 @@
 'use client'
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react'
-import {
-  User,
-  onAuthStateChanged,
-  signInWithPopup,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  updateProfile,
-  signOut as firebaseSignOut,
-} from 'firebase/auth'
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
-import { auth, googleProvider, db } from '@/lib/firebase'
+import { getSupabaseBrowserClient } from '@/lib/supabase'
+
+export interface BalaaUser {
+  uid: string
+  id: string
+  email: string | null
+  displayName: string | null
+  photoURL: string | null
+}
 
 interface AuthContextType {
-  user: User | null
+  user: BalaaUser | null
   loading: boolean
   authModalOpen: boolean
   authModalReason: string
   openAuthModal: (reason?: string, onSuccess?: () => void) => void
   closeAuthModal: () => void
-  signInWithGoogle: () => Promise<User | null>
-  signInWithEmail: (email: string, pass: string) => Promise<User | null>
-  signUpWithEmail: (email: string, pass: string, name?: string) => Promise<User | null>
+  signInWithGoogle: () => Promise<BalaaUser | null>
+  signInWithEmail: (email: string, pass: string) => Promise<BalaaUser | null>
+  signUpWithEmail: (email: string, pass: string, name?: string) => Promise<BalaaUser | null>
   signOut: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
 
+function mapSupabaseUser(sbUser: any): BalaaUser | null {
+  if (!sbUser) return null
+  return {
+    uid: sbUser.id,
+    id: sbUser.id,
+    email: sbUser.email || null,
+    displayName: sbUser.user_metadata?.full_name || sbUser.user_metadata?.name || (sbUser.email ? sbUser.email.split('@')[0] : null),
+    photoURL: sbUser.user_metadata?.avatar_url || sbUser.user_metadata?.picture || null,
+  }
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<BalaaUser | null>(null)
   const [loading, setLoading] = useState(true)
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authModalReason, setAuthModalReason] = useState('')
   const [postAuthCallback, setPostAuthCallback] = useState<(() => void) | null>(null)
 
-  // Listen to Firebase auth changes
+  const supabase = getSupabaseBrowserClient()
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser)
+    // 1. Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      const mapped = session?.user ? mapSupabaseUser(session.user) : null
+      setUser(mapped)
+      setLoading(false)
+    }).catch(() => {
+      setLoading(false)
+    })
+
+    // 2. Listen to auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      const mapped = session?.user ? mapSupabaseUser(session.user) : null
+      setUser(mapped)
       setLoading(false)
 
-      if (currentUser && currentUser.email) {
-        // Automatically save user profile and subscribe email to newsletter/audience
-        try {
-          const userRef = doc(db, 'users', currentUser.uid)
-          await setDoc(
-            userRef,
-            {
-              uid: currentUser.uid,
-              email: currentUser.email,
-              displayName: currentUser.displayName || '',
-              photoURL: currentUser.photoURL || '',
-              lastLoginAt: serverTimestamp(),
-            },
-            { merge: true }
-          )
-
-          // Auto-record to newsletter audience
-          fetch('/api/newsletter', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email: currentUser.email,
-              source: 'auth_registration',
-            }),
-          }).catch(() => {})
-        } catch (e) {
-          console.warn('[AuthProvider] Failed to sync user to Firestore:', e)
-        }
+      if (mapped?.email) {
+        // Auto-record to newsletter audience
+        fetch('/api/newsletter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: mapped.email,
+            source: 'auth_registration',
+          }),
+        }).catch(() => {})
       }
     })
 
-    return () => unsubscribe()
-  }, [])
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [supabase])
 
   const openAuthModal = useCallback((reason?: string, onSuccess?: () => void) => {
     setAuthModalReason(reason || 'Sign in to complete your transaction and secure your order.')
@@ -98,9 +103,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithGoogle = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider)
+      const redirectTo = typeof window !== 'undefined' ? `${window.location.origin}` : undefined
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo,
+        },
+      })
+      if (error) throw error
       triggerPostAuth()
-      return result.user
+      return null
     } catch (error: any) {
       console.error('[AuthProvider] Google sign-in failed:', error)
       throw error
@@ -109,9 +121,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithEmail = async (email: string, pass: string) => {
     try {
-      const result = await signInWithEmailAndPassword(auth, email.trim(), pass)
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password: pass,
+      })
+      if (error) throw error
+      const mapped = mapSupabaseUser(data.user)
+      setUser(mapped)
       triggerPostAuth()
-      return result.user
+      return mapped
     } catch (error: any) {
       console.error('[AuthProvider] Email sign-in failed:', error)
       throw error
@@ -120,12 +138,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUpWithEmail = async (email: string, pass: string, name?: string) => {
     try {
-      const result = await createUserWithEmailAndPassword(auth, email.trim(), pass)
-      if (name && result.user) {
-        await updateProfile(result.user, { displayName: name.trim() })
-      }
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password: pass,
+        options: {
+          data: {
+            full_name: name?.trim() || '',
+            name: name?.trim() || '',
+          },
+        },
+      })
+      if (error) throw error
+      const mapped = mapSupabaseUser(data.user)
+      setUser(mapped)
       triggerPostAuth()
-      return result.user
+      return mapped
     } catch (error: any) {
       console.error('[AuthProvider] Email sign-up failed:', error)
       throw error
@@ -134,7 +161,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     try {
-      await firebaseSignOut(auth)
+      await supabase.auth.signOut()
       setUser(null)
     } catch (error: any) {
       console.error('[AuthProvider] Sign-out failed:', error)

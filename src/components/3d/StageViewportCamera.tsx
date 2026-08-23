@@ -7,10 +7,10 @@ import { useEffect, useRef, useMemo } from 'react'
 import * as THREE from 'three'
 import gsap from 'gsap'
 
-// Canonical Front-Facing Artist View Transform
-export const CANONICAL_ARTIST_CAMERA_POS: [number, number, number] = [0, 1.8, 6.2]
-export const CANONICAL_ARTIST_TARGET_POS: [number, number, number] = [0, 1.2, 0]
-export const CANONICAL_ARTIST_FOV = 44
+// Canonical Front-Facing Full Hole Stage View Transform (Wider Establishing View)
+export const CANONICAL_ARTIST_CAMERA_POS: [number, number, number] = [0, 2.3, 7.8]
+export const CANONICAL_ARTIST_TARGET_POS: [number, number, number] = [0, 1.1, 0]
+export const CANONICAL_ARTIST_FOV = 46
 
 interface CinematicShotConfig {
   id: string
@@ -22,15 +22,14 @@ interface CinematicShotConfig {
 }
 
 const CINEMATIC_SHOTS: CinematicShotConfig[] = [
-  { id: 'artist-front', name: 'Front Artist', localPos: [0, 1.55, 3.2], localTarget: [0, 1.42, 0], fov: 36, weight: 3 },
-  { id: 'medium-performance', name: 'Medium Performance', localPos: [0, 1.6, 4.4], localTarget: [0, 1.35, 0], fov: 40, weight: 3 },
-  { id: 'close-up', name: 'Close Up', localPos: [0, 1.55, 1.95], localTarget: [0, 1.48, 0], fov: 30, weight: 2 },
-  { id: 'three-quarter-left', name: '3/4 Angle Left', localPos: [-2.8, 1.65, 3.8], localTarget: [0, 1.38, 0], fov: 38, weight: 2 },
-  { id: 'three-quarter-right', name: '3/4 Angle Right', localPos: [2.8, 1.65, 3.8], localTarget: [0, 1.38, 0], fov: 38, weight: 2 },
-  { id: 'low-angle-hero', name: 'Low Angle Hero', localPos: [0, 0.78, 3.6], localTarget: [0, 1.35, 0], fov: 40, weight: 2 },
-  { id: 'elevated-wide', name: 'Elevated Wide', localPos: [0, 3.0, 6.8], localTarget: [0, 1.15, 0], fov: 46, weight: 1 },
-  { id: 'side-profile', name: 'Side Profile', localPos: [-3.6, 1.5, 2.0], localTarget: [0, 1.35, 0], fov: 36, weight: 1 },
-  { id: 'stage-wide', name: 'Stage Wide', localPos: [0, 2.1, 7.6], localTarget: [0, 1.2, 0], fov: 45, weight: 1 },
+  { id: 'stage-full-hole', name: 'Full Hole Stage', localPos: [0, 2.3, 7.8], localTarget: [0, 1.1, 0], fov: 46, weight: 4 },
+  { id: 'artist-front', name: 'Front Artist', localPos: [0, 1.55, 3.8], localTarget: [0, 1.35, 0], fov: 38, weight: 3 },
+  { id: 'medium-performance', name: 'Medium Performance', localPos: [0, 1.6, 4.8], localTarget: [0, 1.30, 0], fov: 42, weight: 3 },
+  { id: 'three-quarter-left', name: '3/4 Angle Left', localPos: [-2.8, 1.65, 4.2], localTarget: [0, 1.30, 0], fov: 40, weight: 2 },
+  { id: 'three-quarter-right', name: '3/4 Angle Right', localPos: [2.8, 1.65, 4.2], localTarget: [0, 1.30, 0], fov: 40, weight: 2 },
+  { id: 'low-angle-hero', name: 'Low Angle Hero', localPos: [0, 0.85, 4.0], localTarget: [0, 1.30, 0], fov: 42, weight: 2 },
+  { id: 'elevated-wide', name: 'Elevated Wide', localPos: [0, 3.2, 7.5], localTarget: [0, 1.10, 0], fov: 48, weight: 2 },
+  { id: 'stage-wide', name: 'Stage Wide', localPos: [0, 2.4, 8.4], localTarget: [0, 1.15, 0], fov: 48, weight: 3 },
 ]
 
 export const StageViewportCamera = ({
@@ -57,7 +56,7 @@ export const StageViewportCamera = ({
 
   // Intelligent Shot Timing & Selection state
   const activeShotIndexRef = useRef(0)
-  const nextShotSwitchTimeRef = useRef(4.5)
+  const nextShotSwitchTimeRef = useRef(4.8)
   const shotTimerRef = useRef(0)
   const lastShotIdsRef = useRef<string[]>([])
 
@@ -148,26 +147,27 @@ export const StageViewportCamera = ({
     }
   }, [cameraMode, cameraResetNonce])
 
-  // 4. Per-Frame Front-Lock Artist Follow-Cam & Intelligent Performance Shot Cycling
+  // 4. Per-Frame Front-Lock Artist Follow-Cam & Centered Performance Tracking
   useFrame((_, delta) => {
     if (cameraMode !== 'artist' || isTransitioningRef.current) return
     if (!controlsRef?.current) return
 
     const stage = stageRigRef?.current
+    const lateralX = freeRoamTarget ? freeRoamTarget[0] : 0
+    const lateralZ = freeRoamTarget ? freeRoamTarget[2] : 0
 
     // CASE A: IDLE / PAUSED ARTIST MODE (Locks to front of stage and tracks Dess walking across deck)
     if (!isPlaying) {
       shotTimerRef.current = 0
-      const targetLateralX = freeRoamTarget ? freeRoamTarget[0] * 0.35 : 0
       vCamLocal.set(
-        CANONICAL_ARTIST_CAMERA_POS[0] + targetLateralX * 0.25,
+        CANONICAL_ARTIST_CAMERA_POS[0] + lateralX * 0.35,
         CANONICAL_ARTIST_CAMERA_POS[1],
         CANONICAL_ARTIST_CAMERA_POS[2]
       )
       vTargetLocal.set(
-        CANONICAL_ARTIST_TARGET_POS[0] + targetLateralX,
+        CANONICAL_ARTIST_TARGET_POS[0] + lateralX * 0.85,
         CANONICAL_ARTIST_TARGET_POS[1],
-        CANONICAL_ARTIST_TARGET_POS[2]
+        CANONICAL_ARTIST_TARGET_POS[2] + lateralZ * 0.35
       )
 
       if (stage) {
@@ -193,15 +193,13 @@ export const StageViewportCamera = ({
       return
     }
 
-    // CASE B: ACTIVE PERFORMANCE MODE (Intelligent Shot Cycling every 4–5 seconds)
+    // CASE B: ACTIVE PERFORMANCE MODE (Auto-Cam cycles shots while keeping Dess strictly centered)
     shotTimerRef.current += delta
 
     if (shotTimerRef.current >= nextShotSwitchTimeRef.current) {
       shotTimerRef.current = 0
-      // Varied timing between 4.2s and 5.0s
-      nextShotSwitchTimeRef.current = 4.2 + Math.random() * 0.8
+      nextShotSwitchTimeRef.current = 4.5 + Math.random() * 1.0
 
-      // Filter out recently used shots to prevent repetition
       const availableShots = CINEMATIC_SHOTS.filter(
         (s) => !lastShotIdsRef.current.slice(-2).includes(s.id)
       )
@@ -212,8 +210,18 @@ export const StageViewportCamera = ({
     }
 
     const currentShot = CINEMATIC_SHOTS[activeShotIndexRef.current] || CINEMATIC_SHOTS[0]
-    vCamLocal.set(...currentShot.localPos)
-    vTargetLocal.set(...currentShot.localTarget)
+    
+    // Always center the target directly on Dess's live position
+    vCamLocal.set(
+      currentShot.localPos[0] + lateralX * 0.35,
+      currentShot.localPos[1],
+      currentShot.localPos[2]
+    )
+    vTargetLocal.set(
+      currentShot.localTarget[0] + lateralX * 0.85,
+      currentShot.localTarget[1],
+      currentShot.localTarget[2] + lateralZ * 0.35
+    )
 
     if (stage) {
       vCamWorld.copy(stage.localToWorld(vCamLocal.clone()))
@@ -239,4 +247,3 @@ export const StageViewportCamera = ({
 
   return null
 }
-

@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/firebase'
-import { collection, doc, setDoc, getDocs, getDoc, serverTimestamp, query, where, orderBy } from 'firebase/firestore'
+import { getSupabaseServerClient } from '@/lib/supabase'
 import { hasAdminSession } from '@/lib/admin-auth'
 import { generateOrderReference } from '@/lib/mpesa-till'
 import { BalaaOrder } from '@/types/orders'
 
-// In-memory fallback store for development resilience
+// In-memory fallback store for resilience
 const localOrders = new Map<string, BalaaOrder>()
 
 export async function POST(req: NextRequest) {
@@ -38,22 +37,40 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-      const orderRef = doc(db, 'orders', orderId)
-      await setDoc(orderRef, {
-        ...order,
-        createdAt: serverTimestamp(),
+      const supabase = getSupabaseServerClient()
+      const { error: dbError } = await supabase.from('orders').insert({
+        id: order.id,
+        reference: order.reference,
+        user_id: order.userId,
+        user_email: order.userEmail,
+        user_name: order.userName,
+        type: order.type,
+        item_id: order.itemId,
+        item_title: order.itemTitle,
+        amount: order.amount,
+        currency: order.currency,
+        status: order.status,
+        metadata: order.metadata,
+        created_at: order.createdAt,
       })
 
-      // Also record email to subscribers collection
-      const subRef = doc(db, 'subscribers', order.userEmail)
-      await setDoc(subRef, {
-        email: order.userEmail,
-        source: `${type}_order`,
-        status: 'active',
-        createdAt: serverTimestamp(),
-      }, { merge: true })
-    } catch (fsError) {
-      console.warn('[Orders API] Firestore fallback to memory:', fsError)
+      if (dbError) {
+        console.warn('[Orders API] Supabase insert warning; fallback to memory:', dbError.message)
+        localOrders.set(orderId, order)
+      }
+
+      // Auto-record subscriber
+      try {
+        await supabase.from('newsletter_subscribers').upsert({
+          id: order.userEmail,
+          email: order.userEmail,
+          source: `${type}_order`,
+          status: 'active',
+          created_at: nowIso,
+        }, { onConflict: 'email' })
+      } catch {}
+    } catch (dbErr) {
+      console.warn('[Orders API] Database error fallback:', dbErr)
       localOrders.set(orderId, order)
     }
 
@@ -72,14 +89,30 @@ export async function GET(req: NextRequest) {
     const orderId = searchParams.get('orderId')
     const status = searchParams.get('status')
     const isAdmin = await hasAdminSession()
+    const supabase = getSupabaseServerClient()
 
     // 1. Single order query
     if (orderId) {
       try {
-        const docSnap = await getDoc(doc(db, 'orders', orderId))
-        if (docSnap.exists()) {
-          const data = docSnap.data() as BalaaOrder
-          return NextResponse.json({ order: { ...data, id: docSnap.id } })
+        const { data, error } = await supabase.from('orders').select('*').eq('id', orderId).maybeSingle()
+        if (data && !error) {
+          const mapped: BalaaOrder = {
+            id: data.id,
+            reference: data.reference,
+            userId: data.user_id,
+            userEmail: data.user_email,
+            userName: data.user_name,
+            type: data.type,
+            itemId: data.item_id,
+            itemTitle: data.item_title,
+            amount: Number(data.amount),
+            currency: data.currency,
+            status: data.status,
+            metadata: data.metadata || {},
+            createdAt: data.created_at,
+            confirmedAt: data.confirmed_at,
+          }
+          return NextResponse.json({ order: mapped })
         }
       } catch {}
       if (localOrders.has(orderId)) {
@@ -92,15 +125,35 @@ export async function GET(req: NextRequest) {
     if (userId || userEmail) {
       const results: BalaaOrder[] = []
       try {
-        const q = userEmail
-          ? query(collection(db, 'orders'), where('userEmail', '==', userEmail.trim().toLowerCase()), orderBy('createdAt', 'desc'))
-          : query(collection(db, 'orders'), where('userId', '==', userId), orderBy('createdAt', 'desc'))
-        const snapshot = await getDocs(q)
-        snapshot.forEach((d) => {
-          results.push({ id: d.id, ...d.data() } as BalaaOrder)
-        })
-      } catch (fsErr) {
-        console.warn('[Orders API] Firestore query error; falling back to local memory:', fsErr)
+        let query = supabase.from('orders').select('*').order('created_at', { ascending: false })
+        if (userEmail) {
+          query = query.eq('user_email', userEmail.trim().toLowerCase())
+        } else if (userId) {
+          query = query.eq('user_id', userId)
+        }
+        const { data, error } = await query
+        if (data && !error) {
+          data.forEach((d) => {
+            results.push({
+              id: d.id,
+              reference: d.reference,
+              userId: d.user_id,
+              userEmail: d.user_email,
+              userName: d.user_name,
+              type: d.type,
+              itemId: d.item_id,
+              itemTitle: d.item_title,
+              amount: Number(d.amount),
+              currency: d.currency,
+              status: d.status,
+              metadata: d.metadata || {},
+              createdAt: d.created_at,
+              confirmedAt: d.confirmed_at,
+            })
+          })
+        }
+      } catch (dbErr) {
+        console.warn('[Orders API] Database query error:', dbErr)
       }
 
       // Merge local in-memory
@@ -122,23 +175,44 @@ export async function GET(req: NextRequest) {
 
     const allOrders: BalaaOrder[] = []
     try {
-      const q = query(collection(db, 'orders'), orderBy('createdAt', 'desc'))
-      const snapshot = await getDocs(q)
-      snapshot.forEach((d) => {
-        allOrders.push({ id: d.id, ...d.data() } as BalaaOrder)
-      })
-    } catch (fsErr) {
-      console.warn('[Orders API] Firestore list error, falling back:', fsErr)
+      let query = supabase.from('orders').select('*').order('created_at', { ascending: false })
+      if (status) {
+        query = query.eq('status', status)
+      }
+      const { data, error } = await query
+      if (data && !error) {
+        data.forEach((d) => {
+          allOrders.push({
+            id: d.id,
+            reference: d.reference,
+            userId: d.user_id,
+            userEmail: d.user_email,
+            userName: d.user_name,
+            type: d.type,
+            itemId: d.item_id,
+            itemTitle: d.item_title,
+            amount: Number(d.amount),
+            currency: d.currency,
+            status: d.status,
+            metadata: d.metadata || {},
+            createdAt: d.created_at,
+            confirmedAt: d.confirmed_at,
+          })
+        })
+      }
+    } catch (dbErr) {
+      console.warn('[Orders API] Supabase list error, falling back:', dbErr)
     }
 
     localOrders.forEach((o) => {
       if (!allOrders.some((r) => r.id === o.id)) {
-        allOrders.push(o)
+        if (!status || o.status === status) {
+          allOrders.push(o)
+        }
       }
     })
 
-    const filtered = status ? allOrders.filter((o) => o.status === status) : allOrders
-    return NextResponse.json({ orders: filtered }, { status: 200 })
+    return NextResponse.json({ orders: allOrders }, { status: 200 })
   } catch (error: any) {
     console.error('[Orders API] List error:', error)
     return NextResponse.json({ error: error.message || 'Failed to list orders.' }, { status: 500 })
