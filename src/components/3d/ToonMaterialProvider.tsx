@@ -84,11 +84,14 @@ export function useHybridMaterials() {
             shader.uniforms.uBalaaHighlight = mat.userData.balaaUniforms.uBalaaHighlight
             shader.uniforms.uBalaaRimStrength = mat.userData.balaaUniforms.uBalaaRimStrength
 
-            shader.fragmentShader = CARTOON_LIGHTING_HEADER + shader.fragmentShader
+            shader.fragmentShader = shader.fragmentShader.replace(
+              '#include <common>',
+              '#include <common>\n' + CARTOON_LIGHTING_HEADER
+            )
 
             shader.fragmentShader = shader.fragmentShader.replace(
-              '#include <tonemapping_fragment>',
-              '#include <tonemapping_fragment>\n' + CARTOON_LIGHTING_CHUNK
+              '#include <dithering_fragment>',
+              '#include <dithering_fragment>\n' + CARTOON_LIGHTING_CHUNK
             )
           }
 

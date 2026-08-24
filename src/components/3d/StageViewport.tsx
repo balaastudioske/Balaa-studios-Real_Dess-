@@ -355,7 +355,7 @@ export const StageViewport = ({ className = '', conceptMode = false, activeMode 
 
   const [activePose, setActivePose] = useState<HandPosePreset>('relaxed')
   const [activeCamKey, setActiveCamKey] = useState<CameraPresetKey>('full-body-front')
-  const avatarModel = '/assets/models/dess.glb?v=73-bone-master'
+  const avatarModel = '/assets/models/dess.glb'
   const [whiteStudio, setWhiteStudio] = useState<boolean>(false)
   const [showCalibrationHUD, setShowCalibrationHUD] = useState(false)
 
@@ -486,14 +486,14 @@ export const StageViewport = ({ className = '', conceptMode = false, activeMode 
       <WebGLErrorBoundary>
         <Canvas
           camera={{ fov: 46, near: 0.1, far: 30000, position: [0, 2.3, 7.8] }}
-          dpr={[1, 1.2]}
+          dpr={[1, 1.5]}
           shadows="basic"
           frameloop="always"
           gl={{
-            antialias: false,
-            alpha: false,
+            antialias: true,
+            alpha: true,
             depth: true,
-            stencil: false,
+            stencil: true,
             powerPreference: 'high-performance',
             preserveDrawingBuffer: false,
           }}
@@ -523,7 +523,15 @@ export const StageViewport = ({ className = '', conceptMode = false, activeMode 
             {!whiteStudio && <StageAtmosphereEnclosure />}
             {!whiteStudio && <Suspense fallback={null}><BalaaPhysicalSet onNavigate={onSetMode} /></Suspense>}
             {!whiteStudio && <Suspense fallback={null}><StageMediaWall /></Suspense>}
-            <Suspense fallback={null}>
+            <Suspense fallback={
+              <group position={[0, 0.9, 0]}>
+                <mesh position={[0, 0, 0]}>
+                  <cylinderGeometry args={[0.22, 0.22, 1.75, 16]} />
+                  <meshBasicMaterial color="#f97316" wireframe transparent opacity={0.35} />
+                </mesh>
+                <pointLight position={[0, 0.5, 0]} color="#f97316" intensity={1.5} distance={3} />
+              </group>
+            }>
               <ArtistAvatar ref={avatarGroupRef} modelUrl={avatarModel} conceptMode={conceptMode} position={[0, 0, 0]} handPose={activePose} />
             </Suspense>
             {!whiteStudio && activeMode !== 'wardrobe' && <StageMoveSurface />}

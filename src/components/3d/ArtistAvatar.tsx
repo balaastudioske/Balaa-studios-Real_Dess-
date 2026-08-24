@@ -47,7 +47,7 @@ const PRIMARY_PERFORMANCE_ROUTINES = ['plask-performance'] as const
 const FOOT_SOLE_OFFSET = 0.13
 
 export const ArtistAvatar = forwardRef<ArtistAvatarRef, ArtistAvatarProps>(
-  ({ modelUrl = '/assets/models/dess.glb?v=73-bone-master', conceptMode = false, position = [0, 0, 0], handPose = 'relaxed' }, ref) => {
+  ({ modelUrl = '/assets/models/dess.glb', conceptMode = false, position = [0, 0, 0], handPose = 'relaxed' }, ref) => {
     const rootGroupRef = useRef<THREE.Group>(null!)
     const isPlaying = useAppStore((s) => s.isPlaying)
     const currentTrack = useAppStore((s) => s.currentTrack)

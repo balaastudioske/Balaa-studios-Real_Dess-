@@ -917,12 +917,22 @@ export function SpaceStageEnvironment() {
       <hemisphereLight args={['#38bdf8', '#0f172a', 1.2]} />
 
       {/* ── 6. Colossal Sun in Deep Space (New Model + 2D Solar Furnace) ─────── */}
-      <Suspense fallback={null}>
+      <Suspense fallback={
+        <mesh position={[SUN_POSITION.x, SUN_POSITION.y, SUN_POSITION.z]}>
+          <sphereGeometry args={[140, 24, 24]} />
+          <meshBasicMaterial color="#ffaa22" />
+        </mesh>
+      }>
         <ColossalCentralSun />
       </Suspense>
 
       {/* ── 7. Massive Earth on the RIGHT View of Stage (Symmetrical 3D Volumetric Glow) ───── */}
-      <Suspense fallback={null}>
+      <Suspense fallback={
+        <mesh position={[EARTH_POSITION.x, EARTH_POSITION.y, EARTH_POSITION.z]}>
+          <sphereGeometry args={[80, 24, 24]} />
+          <meshStandardMaterial color="#1e40af" roughness={0.4} />
+        </mesh>
+      }>
         <MassiveEarthSatellitePerspective />
       </Suspense>
 

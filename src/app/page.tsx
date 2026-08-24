@@ -11,8 +11,9 @@ import { REAL_DESS_MEDIA, type BalaaStageMode } from '@/lib/balaa-catalog'
 const StageViewport = dynamic(() => import('@/components/3d/StageViewport').then((module) => module.StageViewport), {
   ssr: false,
   loading: () => (
-    <div className="grid h-screen w-screen place-items-center bg-neutral-950 font-mono text-xs text-neutral-400">
-      INITIALIZING BALAA STAGE…
+    <div className="flex h-screen w-screen flex-col items-center justify-center gap-3 bg-neutral-950 font-mono text-xs text-orange-400">
+      <div className="h-6 w-6 animate-spin rounded-full border-2 border-orange-500 border-t-transparent" />
+      <span className="font-bold tracking-widest animate-pulse">INITIALIZING BALAA STAGE…</span>
     </div>
   ),
 })
