@@ -51,7 +51,7 @@ export const StageViewportCamera = ({
     }))
   )
   const isPlaying = useAppStore((s) => s.isPlaying)
-  const freeRoamTarget = useAppStore((s) => s.freeRoamTarget)
+  const dessLivePosition = useAppStore((s) => s.dessLivePosition)
   const cameraResetNonce = useAppStore((s) => s.cameraResetNonce)
 
   // Intelligent Shot Timing & Selection state
@@ -153,21 +153,21 @@ export const StageViewportCamera = ({
     if (!controlsRef?.current) return
 
     const stage = stageRigRef?.current
-    const lateralX = freeRoamTarget ? freeRoamTarget[0] : 0
-    const lateralZ = freeRoamTarget ? freeRoamTarget[2] : 0
+    const lateralX = dessLivePosition ? dessLivePosition[0] : 0
+    const lateralZ = dessLivePosition ? dessLivePosition[2] : 0
 
     // CASE A: IDLE / PAUSED ARTIST MODE (Locks to front of stage and tracks Dess walking across deck)
     if (!isPlaying) {
       shotTimerRef.current = 0
       vCamLocal.set(
-        CANONICAL_ARTIST_CAMERA_POS[0] + lateralX * 0.35,
+        CANONICAL_ARTIST_CAMERA_POS[0] + lateralX * 0.45,
         CANONICAL_ARTIST_CAMERA_POS[1],
-        CANONICAL_ARTIST_CAMERA_POS[2]
+        CANONICAL_ARTIST_CAMERA_POS[2] + lateralZ * 0.2
       )
       vTargetLocal.set(
-        CANONICAL_ARTIST_TARGET_POS[0] + lateralX * 0.85,
+        CANONICAL_ARTIST_TARGET_POS[0] + lateralX,
         CANONICAL_ARTIST_TARGET_POS[1],
-        CANONICAL_ARTIST_TARGET_POS[2] + lateralZ * 0.35
+        CANONICAL_ARTIST_TARGET_POS[2] + lateralZ
       )
 
       if (stage) {
@@ -213,14 +213,14 @@ export const StageViewportCamera = ({
     
     // Always center the target directly on Dess's live position
     vCamLocal.set(
-      currentShot.localPos[0] + lateralX * 0.35,
+      currentShot.localPos[0] + lateralX * 0.45,
       currentShot.localPos[1],
-      currentShot.localPos[2]
+      currentShot.localPos[2] + lateralZ * 0.2
     )
     vTargetLocal.set(
-      currentShot.localTarget[0] + lateralX * 0.85,
+      currentShot.localTarget[0] + lateralX,
       currentShot.localTarget[1],
-      currentShot.localTarget[2] + lateralZ * 0.35
+      currentShot.localTarget[2] + lateralZ
     )
 
     if (stage) {
@@ -232,8 +232,8 @@ export const StageViewportCamera = ({
     }
 
     // Smooth cinematic camera tracking (never jumps/teleports)
-    camera.position.lerp(vCamWorld, delta * 2.2)
-    currentTarget.current.lerp(vTargetWorld, delta * 2.2)
+    camera.position.lerp(vCamWorld, delta * 2.5)
+    currentTarget.current.lerp(vTargetWorld, delta * 2.5)
 
     controlsRef.current.target.copy(currentTarget.current)
     controlsRef.current.update()

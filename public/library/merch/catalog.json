@@ -1,154 +1,134 @@
 {
   "products": [
     {
-      "id": "balaa-tee_charcoal",
-      "name": "BALAA Oversized Tee — Charcoal",
-      "description": "Final BALAA merch design 01 (foundation: shirt).",
-      "category": "tshirt",
-      "price": 45,
-      "currency": "USD",
-      "color": "#2B2B2B",
-      "outfitPresetId": "tee_charcoal",
-      "garmentFile": "/library/merch/01/garment.glb",
-      "available": true,
-      "tags": [
-        "visual-review-required"
-      ]
-    },
-    {
-      "id": "balaa-hoodie_black",
-      "name": "BALAA Classic Hoodie — Jet Black",
-      "description": "Final BALAA merch design 02 (foundation: hoodie).",
+      "id": "balaa-black-hoodie",
+      "name": "Balaa Black Hoodie",
+      "description": "Heavyweight brushed fleece hoodie with embroidered signature BALAA branding.",
       "category": "hoodie",
-      "price": 89,
-      "currency": "USD",
+      "price": 1780,
+      "currency": "KSH",
       "color": "#0A0A0A",
       "outfitPresetId": "hoodie_black",
-      "garmentFile": "/library/merch/02/garment.glb",
+      "garmentFile": "/library/merch/01/garment.glb",
       "available": true,
-      "tags": [
-        "visual-review-required"
-      ]
+      "tags": ["streetwear", "essentials", "unisex"]
     },
     {
-      "id": "balaa-sweater_charcoal",
-      "name": "BALAA Crew Sweater — Charcoal",
-      "description": "Final BALAA merch design 03 (foundation: sweater).",
+      "id": "balaa-black-tee",
+      "name": "Balaa Black T-EE",
+      "description": "100% heavyweight cotton studio tee with contrast jet black BALAA branding.",
+      "category": "tshirt",
+      "price": 900,
+      "currency": "KSH",
+      "color": "#0A0A0A",
+      "outfitPresetId": "tee_black",
+      "garmentFile": "/library/merch/02/garment.glb",
+      "available": true,
+      "tags": ["basics", "unisex"]
+    },
+    {
+      "id": "balaa-bw-sweatshirt",
+      "name": "Balaa Black and White Sweatshirt",
+      "description": "Dual-tone contrast athletic sweatshirt with high-density BALAA crest.",
       "category": "sweater",
-      "price": 75,
-      "currency": "USD",
+      "price": 1500,
+      "currency": "KSH",
       "color": "#2B2B2B",
       "outfitPresetId": "sweater_charcoal",
       "garmentFile": "/library/merch/03/garment.glb",
       "available": true,
-      "tags": [
-        "visual-review-required"
-      ]
+      "tags": ["streetwear", "layering"]
     },
     {
-      "id": "balaa-tee_white",
-      "name": "BALAA Logo Tee — Pure White",
-      "description": "Final BALAA merch design 04 (foundation: shirt).",
-      "category": "tshirt",
-      "price": 45,
-      "currency": "USD",
-      "color": "#FFFFFF",
-      "outfitPresetId": "tee_white",
-      "garmentFile": "/library/merch/04/garment.glb",
-      "available": true,
-      "tags": [
-        "visual-review-required"
-      ]
-    },
-    {
-      "id": "balaa-hoodie_charcoal",
-      "name": "BALAA Oversized Hoodie — Charcoal",
-      "description": "Final BALAA merch design 05 (foundation: hoodie).",
+      "id": "balaa-bw-hoodie",
+      "name": "Balaa Black and White Hoodie",
+      "description": "Signature tailored two-tone fleece hoodie with embroidered BALAA typography.",
       "category": "hoodie",
-      "price": 89,
-      "currency": "USD",
+      "price": 1780,
+      "currency": "KSH",
       "color": "#2B2B2B",
       "outfitPresetId": "hoodie_charcoal",
+      "garmentFile": "/library/merch/04/garment.glb",
+      "available": true,
+      "tags": ["streetwear", "essentials", "unisex"]
+    },
+    {
+      "id": "balaa-sweatshirt",
+      "name": "Balaa Sweatshirt",
+      "description": "Ultra-plush French terry knit pullover in deep studio charcoal.",
+      "category": "sweater",
+      "price": 1500,
+      "currency": "KSH",
+      "color": "#1A1A1A",
+      "outfitPresetId": "sweater_charcoal",
       "garmentFile": "/library/merch/05/garment.glb",
       "available": true,
-      "tags": [
-        "visual-review-required"
-      ]
+      "tags": ["streetwear", "layering"]
     },
     {
-      "id": "balaa-sweater_cream",
-      "name": "BALAA Crew Sweater — Cream",
-      "description": "Final BALAA merch design 06 (foundation: sweater).",
-      "category": "sweater",
-      "price": 75,
-      "currency": "USD",
-      "color": "#F5F0E8",
-      "outfitPresetId": "sweater_cream",
-      "garmentFile": "/library/merch/06/garment.glb",
-      "available": true,
-      "tags": [
-        "visual-review-required"
-      ]
-    },
-    {
-      "id": "balaa-tee_black",
-      "name": "BALAA Logo Tee — Jet Black",
-      "description": "Final BALAA merch design 07 (foundation: shirt).",
-      "category": "tshirt",
-      "price": 45,
-      "currency": "USD",
-      "color": "#0A0A0A",
-      "outfitPresetId": "tee_black",
-      "garmentFile": "/library/merch/07/garment.glb",
-      "available": true,
-      "tags": [
-        "visual-review-required"
-      ]
-    },
-    {
-      "id": "balaa-hoodie_white",
-      "name": "BALAA Classic Hoodie — Pure White",
-      "description": "Final BALAA merch design 08 (foundation: hoodie).",
+      "id": "balaa-white-left-logo-hoodie",
+      "name": "Balaa White Left Chest Logo Hoodie",
+      "description": "Optical white concert hoodie with minimalist left-chest BALAA logo embroidery.",
       "category": "hoodie",
-      "price": 89,
-      "currency": "USD",
+      "price": 1780,
+      "currency": "KSH",
       "color": "#FFFFFF",
       "outfitPresetId": "hoodie_white",
+      "garmentFile": "/library/merch/06/garment.glb",
+      "available": true,
+      "tags": ["streetwear", "essentials"]
+    },
+    {
+      "id": "balaa-white-sweater",
+      "name": "Balaa White Sweater",
+      "description": "Warm white heavyweight fleece sweater with tonal BALAA studio emblem.",
+      "category": "sweater",
+      "price": 1500,
+      "currency": "KSH",
+      "color": "#F5F0E8",
+      "outfitPresetId": "sweater_cream",
+      "garmentFile": "/library/merch/07/garment.glb",
+      "available": true,
+      "tags": ["streetwear", "layering"]
+    },
+    {
+      "id": "balaa-white-tee",
+      "name": "Balaa White T-EE",
+      "description": "Crisp optical white studio tee with contrast jet black BALAA branding.",
+      "category": "tshirt",
+      "price": 900,
+      "currency": "KSH",
+      "color": "#FFFFFF",
+      "outfitPresetId": "tee_white",
       "garmentFile": "/library/merch/08/garment.glb",
       "available": true,
-      "tags": [
-        "visual-review-required"
-      ]
+      "tags": ["basics", "unisex"]
     },
     {
-      "id": "balaa-sweater_black",
-      "name": "BALAA Crew Sweater — Jet Black",
-      "description": "Final BALAA merch design 09 (foundation: sweater).",
-      "category": "sweater",
-      "price": 75,
-      "currency": "USD",
-      "color": "#0A0A0A",
-      "outfitPresetId": "sweater_black",
+      "id": "balaa-white-hoodie",
+      "name": "Balaa White Hoodie",
+      "description": "High-visibility white concert hoodie with black contrast drawstring accents.",
+      "category": "hoodie",
+      "price": 1780,
+      "currency": "KSH",
+      "color": "#FFFFFF",
+      "outfitPresetId": "hoodie_white",
       "garmentFile": "/library/merch/09/garment.glb",
       "available": true,
-      "tags": [
-        "visual-review-required"
-      ]
+      "tags": ["streetwear", "essentials"]
     },
     {
-      "id": "balaa-sweater_bomber",
-      "name": "BALAA Street Bomber — Charcoal",
-      "description": "Final BALAA merch design 10 (foundation: sweater).",
-      "category": "sweater",
-      "price": 75,
-      "currency": "USD",
-      "color": "#1E1E1E",
-      "outfitPresetId": "sweater_bomber",
+      "id": "balaa-black-left-logo-hoodie",
+      "name": "Balaa Black Left Chest Logo Hoodie",
+      "description": "Underground edition: Deep black hoodie with embroidered left chest BALAA crest.",
+      "category": "hoodie",
+      "price": 1780,
+      "currency": "KSH",
+      "color": "#0A0A0A",
+      "outfitPresetId": "hoodie_black",
       "garmentFile": "/library/merch/10/garment.glb",
       "available": true,
-      "tags": [
-        "visual-review-required"
-      ]
+      "tags": ["streetwear", "limited"]
     }
   ]
 }

@@ -462,14 +462,20 @@ export const ArtistAvatar = forwardRef<ArtistAvatarRef, ArtistAvatarProps>(
       activeAction.current = action
     }, [mixer, clips, currentTrack?.bpm, routineClipName])
 
-    // Per-frame physics, smooth full-rate animation, stage clamping, and finger rig updates
+    // Per-frame physics, smooth 25 FPS animation step, stage clamping, and finger rig updates
+    const accumulatedAnimTime = useRef(0)
     useFrame(({ clock, pointer }, delta) => {
-      // 1. Advance animation mixer smoothly on original authored frames (native 60fps)
-      // Remove previous additive presentation head offset before clip evaluation
+      // 1. Advance animation mixer at 25 frames per second without animating in twos
       if (headBone) headBone.quaternion.multiply(headLookOffset.current.clone().invert())
       
       if (mixer) {
-        mixer.update(delta)
+        // Smooth 25 FPS playback rate (0.04s per step)
+        accumulatedAnimTime.current += delta
+        const step25fps = 1 / 25
+        while (accumulatedAnimTime.current >= step25fps) {
+          mixer.update(step25fps)
+          accumulatedAnimTime.current -= step25fps
+        }
       }
 
       // 2. Apply 2nd-order Finger Spring Physics over current pose
@@ -553,6 +559,8 @@ export const ArtistAvatar = forwardRef<ArtistAvatarRef, ArtistAvatarProps>(
         p.x = THREE.MathUtils.clamp(p.x, STAGE_BOUNDS.minX, STAGE_BOUNDS.maxX)
         p.z = THREE.MathUtils.clamp(p.z, STAGE_BOUNDS.minZ, STAGE_BOUNDS.maxZ)
         p.y = 0.0
+        // Live position reporting for continuous camera tracking
+        useAppStore.getState().setDessLivePosition([p.x, p.y, p.z])
       }
       if (handheldMicRef.current) handheldMicRef.current.visible = isPlaying
     })

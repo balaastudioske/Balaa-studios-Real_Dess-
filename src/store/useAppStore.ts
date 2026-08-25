@@ -44,6 +44,7 @@ interface AppState {
   activeMediaId: string
   freeRoamTarget: [number, number, number] | null
   cameraResetNonce: number
+  dessLivePosition: [number, number, number]
 }
 
 interface AppActions {
@@ -69,6 +70,7 @@ interface AppActions {
   setPerformanceStartedAt: (timestamp: number | null) => void
   setActiveMediaId: (id: string) => void
   setFreeRoamTarget: (target: [number, number, number] | null) => void
+  setDessLivePosition: (pos: [number, number, number]) => void
   triggerCameraReset: () => void
   resetStore: () => void
 }
@@ -96,6 +98,7 @@ export const useAppStore = create<AppState & AppActions>()((set) => ({
   performanceStartedAt: null,
   activeMediaId: 'cure',
   freeRoamTarget: null,
+  dessLivePosition: [0, 0, 0],
   cameraResetNonce: 0,
 
   triggerCameraReset: () => set((state) => ({ cameraResetNonce: state.cameraResetNonce + 1 })),
@@ -131,6 +134,7 @@ export const useAppStore = create<AppState & AppActions>()((set) => ({
       freeRoamTarget: null,
     }),
   setFreeRoamTarget: (target) => set({ freeRoamTarget: target }),
+  setDessLivePosition: (pos) => set({ dessLivePosition: pos }),
   resetStore: () =>
     set({
       currentTrack: null,

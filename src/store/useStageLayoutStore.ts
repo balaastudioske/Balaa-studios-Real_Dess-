@@ -10,7 +10,7 @@ const initialItems: StageLayoutItem[] = [
   ['merch-03', 'Garment 03 · Textured', [-4.1, 1.05, -1.65], 0.78], ['merch-04', 'Garment 04 · Textured', [-6.8, 1.05, -0.25], 0.78],
   ['merch-05', 'Garment 05 · Textured', [-5.45, 1.05, 0.2], 0.78], ['merch-06', 'Garment 06 · Textured', [-4.1, 1.05, -0.25], 0.78],
   ['merch-07', 'Garment 07 · Textured', [-6.8, 1.05, 1.18], 0.78], ['merch-08', 'Garment 08 · Textured', [-5.45, 1.05, 1.52], 0.78],
-  ['merch-09', 'Garment 09 · Textured', [-4.1, 1.05, 1.18], 0.78],
+  ['merch-09', 'Garment 09 · Textured', [-4.1, 1.05, 1.18], 0.78], ['merch-10', 'Garment 10 · Textured', [-5.45, 1.05, 2.2], 0.78],
   ['desk', 'Creative desk', [4.75, 0, -1.25], 1.05], ['console', 'Mixing console', [4.7, 0, -0.8], 0.43],
   ['monitor', 'Monitor speaker', [6.25, 0, -1.3], 1.1], ['audio-rack', 'Audio equipment rack', [6.8, 0, -2.25], 1.55],
   ['equipment-rack', 'Equipment rack', [3.45, 0, -2.3], 1.45], ['synth', 'Synthesizer', [4.55, 0, 0.05], 0.7],

@@ -327,8 +327,8 @@ const CAMERA_PRESETS: Record<
   CameraPresetKey,
   { pos: [number, number, number]; target: [number, number, number]; label: string }
 > = {
-  stage: { pos: [0, 2.2, 5.8], target: [0, 1.2, 0], label: 'Stage Full' },
-  'full-body-front': { pos: [0, 1.1, 3.2], target: [0, 1.0, 0], label: 'Front Fashion (Ref 2/3)' },
+  stage: { pos: [0, 2.3, 7.8], target: [0, 1.1, 0], label: 'Default Stage (Image 3)' },
+  'full-body-front': { pos: [0, 1.6, 4.2], target: [0, 1.2, 0], label: 'Medium Front' },
   avatar: { pos: [0, 1.55, 1.4], target: [0, 1.50, 0], label: 'Face / Bust' },
   'left-hand': { pos: [0.75, 1.42, 0.45], target: [0.75, 1.42, 0.05], label: 'Left Hand' },
   'right-hand': { pos: [-0.75, 1.42, 0.45], target: [-0.75, 1.42, 0.05], label: 'Right Hand' },
@@ -354,7 +354,7 @@ export const StageViewport = ({ className = '', conceptMode = false, activeMode 
   const [canRender, setCanRender] = useState(false)
 
   const [activePose, setActivePose] = useState<HandPosePreset>('relaxed')
-  const [activeCamKey, setActiveCamKey] = useState<CameraPresetKey>('full-body-front')
+  const [activeCamKey, setActiveCamKey] = useState<CameraPresetKey>('stage')
   const avatarModel = '/assets/models/dess.glb'
   const [whiteStudio, setWhiteStudio] = useState<boolean>(false)
   const [showCalibrationHUD, setShowCalibrationHUD] = useState(false)

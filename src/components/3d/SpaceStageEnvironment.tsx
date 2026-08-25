@@ -360,18 +360,22 @@ const earthAtmosphereFragmentShader = `
   }
 `
 
-function MassiveEarthSatellitePerspective() {
+function MassiveRealisticEarth() {
   const { scene } = useGLTF('/assets/models/earth-globe.glb')
   const earthGlobeRef = useRef<THREE.Group>(null!)
+  const earthRootGroupRef = useRef<THREE.Group>(null!)
+  const isPlaying = useAppStore((s) => s.isPlaying)
 
   const clonedScene = useMemo(() => {
     const c = clone(scene)
     c.traverse((node: any) => {
-      if (node.isMesh) {
-        node.castShadow = true
-        node.receiveShadow = true
-        if (node.material) {
-          node.material.fog = false
+      if (node.isMesh && node.material) {
+        node.material.roughness = 0.85
+        node.material.metalness = 0.05
+        node.material.fog = false
+        if (node.material.isMeshStandardMaterial) {
+          node.material.emissive = new THREE.Color('#021a30')
+          node.material.emissiveIntensity = 0.18
         }
       }
     })
@@ -394,7 +398,20 @@ function MassiveEarthSatellitePerspective() {
     })
   }, [])
 
-  useFrame((_, delta) => {
+  useFrame(({ clock }, delta) => {
+    const time = clock.getElapsedTime()
+    // Earth orbital physics: As stage rocket thrusters propel forward in space,
+    // the stage orbits around Earth with genuine space mechanics.
+    const orbitalSpeed = isPlaying ? 0.035 : 0.018
+    const orbitAngle = time * orbitalSpeed + 0.35
+    const ox = Math.cos(orbitAngle) * 165 + 15
+    const oz = Math.sin(orbitAngle) * 120 - 75
+    const oy = -28 + Math.sin(orbitAngle * 0.7) * 8
+
+    if (earthRootGroupRef.current) {
+      earthRootGroupRef.current.position.set(ox, oy, oz)
+    }
+
     // 24-hour continuous Earth axial rotation
     if (earthGlobeRef.current) {
       earthGlobeRef.current.rotation.y += delta * 0.16
@@ -402,7 +419,7 @@ function MassiveEarthSatellitePerspective() {
   })
 
   return (
-    <group position={[EARTH_POSITION.x, EARTH_POSITION.y, EARTH_POSITION.z]} name="MASSIVE_EARTH_ON_RIGHT">
+    <group ref={earthRootGroupRef} position={[EARTH_POSITION.x, EARTH_POSITION.y, EARTH_POSITION.z]} name="MASSIVE_EARTH_ON_RIGHT">
       {/* 23.44° Physical Earth Axial Tilt */}
       <group rotation={[0, 0, THREE.MathUtils.degToRad(23.44)]}>
         {/* Massive 3D Earth Globe (scale: 160 units => radius ~80) */}
@@ -933,7 +950,7 @@ export function SpaceStageEnvironment() {
           <meshStandardMaterial color="#1e40af" roughness={0.4} />
         </mesh>
       }>
-        <MassiveEarthSatellitePerspective />
+        <MassiveRealisticEarth />
       </Suspense>
 
       {/* ── 8. 8 Grand Cartoon Cel-Shaded Planets in Keplerian Orbits ─────────── */}

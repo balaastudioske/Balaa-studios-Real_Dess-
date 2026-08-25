@@ -59,15 +59,15 @@ export function StageAtmosphereEnclosure() {
     return tex
   }, [])
 
-  // Lightweight Architectural Glass Material (Standard material to avoid heavy transmission buffer passes)
+  // Lightweight Architectural Glass Material (Crystal-clear optical glass)
   const glassMaterial = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: '#e0f2fe',
+        color: '#ffffff',
         transparent: true,
-        opacity: 0.12,
-        roughness: 0.08,
-        metalness: 0.2,
+        opacity: 0.035,
+        roughness: 0.01,
+        metalness: 0.05,
         side: THREE.DoubleSide,
         depthWrite: false,
       }),

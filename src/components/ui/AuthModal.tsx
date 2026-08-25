@@ -21,10 +21,14 @@ export function AuthModal() {
     setLoading(true)
     try {
       await signInWithGoogle()
-      // Modal will be closed automatically by AuthContext
     } catch (err: any) {
-      if (err?.code !== 'auth/popup-closed-by-user') {
-        setError(err?.message || 'Google sign-in failed. Please try again.')
+      const msg = err?.message || ''
+      if (err?.code === 'auth/popup-closed-by-user') {
+        // User closed popup; ignore
+      } else if (/validation_failed|provider is not enabled|unsupported provider/i.test(msg)) {
+        setError('Google sign-in is not enabled in your Supabase project yet. Please sign in or create an account with your Email & Password below.')
+      } else {
+        setError(msg || 'Google sign-in failed. Please continue with Email below.')
       }
     } finally {
       setLoading(false)
@@ -53,9 +57,11 @@ export function AuthModal() {
     } catch (err: any) {
       const msg = err?.message || ''
       if (/invalid login|invalid-credential|wrong-password|user-not-found/i.test(msg)) {
-        setError('Invalid email or password.')
+        setError('Invalid email or password. If you do not have an account, click Sign up below.')
       } else if (/already registered|already in use|unique constraint/i.test(msg)) {
-        setError('An account with this email already exists. Please sign in.')
+        setError('An account with this email already exists. Please sign in with your password.')
+      } else if (/email not confirmed/i.test(msg)) {
+        setError('Please check your email inbox to confirm your registration.')
       } else {
         setError(msg || 'Authentication failed. Please check your credentials.')
       }

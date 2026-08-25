@@ -1,7 +1,7 @@
 'use client'
 
 import { useFrame } from '@react-three/fiber'
-import { useGLTF, useTexture } from '@react-three/drei'
+import { useGLTF } from '@react-three/drei'
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js'
 import { useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
@@ -22,23 +22,22 @@ export function TexturedMerchGarment({ look, position, rotation, maxExtent, onCl
   const [hovered, setHovered] = useState(false)
   const padIndex = String(look).padStart(2, '0')
   const { scene } = useGLTF(`/library/merch/${padIndex}/garment.glb`)
-  const diffuseMap = useTexture(`/library/merch-textured/${look}/texture_diffuse.png`)
   const floatingRef = useRef<THREE.Group>(null)
 
   const model = useMemo(() => {
-    diffuseMap.colorSpace = THREE.SRGBColorSpace
-    diffuseMap.generateMipmaps = true
-    diffuseMap.minFilter = THREE.LinearMipmapLinearFilter
-    
     const copy = clone(scene)
     copy.traverse((child) => {
       if (!(child as THREE.Mesh).isMesh) return
       const mesh = child as THREE.Mesh
-      mesh.material = new THREE.MeshStandardMaterial({
-        map: diffuseMap,
-        roughness: 0.78,
-        metalness: 0.04,
-      })
+      if (mesh.material) {
+        mesh.material = (mesh.material as THREE.Material).clone()
+        if ((mesh.material as THREE.MeshStandardMaterial).isMeshStandardMaterial) {
+          const std = mesh.material as THREE.MeshStandardMaterial
+          std.roughness = 0.75
+          std.metalness = 0.08
+          std.needsUpdate = true
+        }
+      }
       mesh.castShadow = true
       mesh.receiveShadow = true
     })
@@ -50,7 +49,7 @@ export function TexturedMerchGarment({ look, position, rotation, maxExtent, onCl
     const placed = new THREE.Box3().setFromObject(copy)
     copy.position.y -= placed.min.y
     return copy
-  }, [scene, diffuseMap, maxExtent])
+  }, [scene, maxExtent])
 
   useFrame(({ clock }, delta) => {
     const group = floatingRef.current
@@ -88,8 +87,8 @@ export function TexturedMerchGarment({ look, position, rotation, maxExtent, onCl
   )
 }
 
-// Preload the GLBs
-for (let i = 1; i <= 9; i++) {
+// Preload all 10 GLBs
+for (let i = 1; i <= 10; i++) {
   useGLTF.preload(`/library/merch/${String(i).padStart(2, '0')}/garment.glb`)
 }
 

@@ -35,17 +35,17 @@ export const ANIMATION_MAPPINGS: Record<string, AnimationMapping> = {
   // Movement
   walk_forward: {
     clipName: 'Walk_Forward',
-    fbxPath: '/library/animations/mixamo/Unarmed Walk Forward.fbx',
+    fbxPath: '/library/animations/mixamo/Standard Walk.fbx',
     loop: true,
   },
   walking: {
     clipName: 'Walking',
-    fbxPath: '/library/animations/mixamo/Walking.fbx',
+    fbxPath: '/library/animations/mixamo/Standard Walk.fbx',
     loop: true,
   },
   walking_1: {
     clipName: 'Walking_1',
-    fbxPath: '/library/animations/mixamo/Walking (1).fbx',
+    fbxPath: '/library/animations/mixamo/Standard Walk.fbx',
     loop: true,
   },
   walking_start: {

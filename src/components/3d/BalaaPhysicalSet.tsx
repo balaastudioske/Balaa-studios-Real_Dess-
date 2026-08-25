@@ -550,9 +550,9 @@ export function BalaaPhysicalSet({ onNavigate }: { onNavigate?: (mode: BalaaStag
 
       {/* Fashion/merch left — showroom rail with non-blocking progressive stream. */}
       <group name="BALAA_MERCH_LEFT">
-        {Array.from({ length: 9 }, (_, index) => {
+        {Array.from({ length: 10 }, (_, index) => {
           const id = `merch-${String(index + 1).padStart(2, '0')}`
-          const item = layout(id)
+          const item = layout(id) || { position: [-5.45, 1.05, 2.2], rotation: [0, 0, 0], targetHeight: 0.78 }
           return (
             <Suspense key={id} fallback={<StudioFallback position={item.position} targetHeight={item.targetHeight} />}>
               <Float speed={0.7 + index * 0.04} floatIntensity={0.13} rotationIntensity={0.015}>
